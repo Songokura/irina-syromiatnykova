@@ -1,9 +1,8 @@
 /* ============================================================
    ИРИНА СЫРОМЯТНИКОВА, гештальт-терапевт - скрипт страницы.
-   Плиты и сигнатура «фигура и фон» (герой: контур арки прочерчивается и фигура набирает цвет
-   по --intro, по --stay проясняется фон; плиты услуг: --open на каждой .pw) · арки меряются JS
-   (ширина от свободной высоты, контур SVG по размеру) · меню · бегущая строка · i18n RU/EN ·
-   WhatsApp с текстом по теме · форма в WhatsApp.
+   Герой статичный. Плиты услуг - sticky-стек: на каждой .pw пишутся
+   --enter / --exit / --open, ламели жалюзи раскрывают фото по --open.
+   Меню, якоря, i18n RU/EN, WhatsApp с текстом по теме, форма в WhatsApp.
    Библиотек нет. Ссылки tel/wa не перезаписываются в момент клика,
    обработчик кликов - только делегирование в фазе захвата (совместимость с LeadBot).
    ============================================================ */
@@ -90,33 +89,10 @@ function setWa(lang){
   });
 }
 
-/* ---------------- БЕГУЩАЯ СТРОКА: темы (герой) ---------------- */
-var TICKS = {
-  ru: ["Тревога и панические атаки", "Депрессивные состояния", "Травма", "Кризисы и разводы", "Отношения", "Самооценка и границы",
-       "Выгорание", "Подростки", "Пары и семьи", "Родители", "Супервизия", "Русский и украинский", "Краков", "Онлайн по всему миру"],
-  en: ["Anxiety and panic attacks", "Depressive states", "Trauma", "Crises and divorce", "Relationships", "Self-esteem and boundaries",
-       "Burnout", "Teenagers", "Couples and families", "Parents", "Supervision", "Russian and Ukrainian", "Kraków", "Online worldwide"]
-};
-function fillTicker(){
-  var list = TICKS[curLang()] || TICKS.ru;
-  document.querySelectorAll(".ticker[data-tick]").forEach(function(el){
-    var one = list.map(function(t){ return "<b>" + t + "</b>"; }).join("");
-    el.innerHTML = one;
-    var w = el.scrollWidth || 1000;
-    var need = Math.max(2, Math.ceil((innerWidth * 2) / w) + 1);
-    var html = "";
-    for (var i = 0; i < need; i++) html += one;
-    el.innerHTML = html;
-    el.style.setProperty("--tkw", w + "px");
-    el.style.setProperty("--tkd", Math.max(30, w / 26) + "s");
-  });
-}
-
 /* дисплейная строка героя в одну строку: ужимаем кегль, пока не влезет */
 function fitText(){
   document.querySelectorAll(".h1 .big1").forEach(function(el){
     el.style.fontSize = "";
-    if (getComputedStyle(el).whiteSpace !== "nowrap") return;
     var box = el.parentElement.parentElement;
     var bw = box.clientWidth; if (!bw) return;
     var size = parseFloat(getComputedStyle(el).fontSize), base = size;
@@ -142,23 +118,27 @@ var EN = {
   "h.big": "Gestalt therapist", "h.name": "Iryna Syromiatnykova",
   "h.lead": "Individual therapy, couples, teenagers, supervision. 1500+ sessions. In person in central Kraków and online. 50-minute session - $50.",
   "h.b1": "Book via WhatsApp", "h.b2": "Services and prices", "h.ig": "Thoughts and practice on Instagram",
-  "alt.hero": "Two armchairs by the window in soft daylight",
+  "alt.hero": "Two armchairs by a window with blinds in soft daylight",
   "b.wa": "Book via WhatsApp", "b.tg": "Message on Telegram", "b.tg2": "Telegram", "b.write": "Write", "b.wa2": "Message on WhatsApp", "b.book": "Book a session", "b.pack": "Get a package",
-  "s1.kick": "Short-term counselling", "s1.h": "Up to 10 meetings - one specific request",
-  "s1.lead": "Anxiety, a crisis, a hard decision, relationships, boundaries. A clear goal and a clear timeframe. 50 minutes - $50.",
-  "s1.c1": "5-10 sessions", "s1.c2": "online or in Kraków", "s1.c3": "10-session package -10%",
-  "alt.s1": "An armchair in an arched window nook",
+  "s1.kick": "Short-term counselling", "s1.h": "Up to 10 meetings around one request",
+  "s1.lead": "Anxiety, a crisis, a hard decision, relationships, boundaries. A clear goal and a clear timeframe.",
+  "s1.fig": "meetings · $50 per 50 minutes",
+  "s1.c1": "online or in Kraków", "s1.c2": "10-session package -10%", "s1.c3": "Russian and Ukrainian",
+  "alt.s1": "An armchair by a window with a view of trees",
   "s2.kick": "Long-term psychotherapy", "s2.h": "Deeper than the symptom: therapy at your own pace",
-  "s2.lead": "Repeating patterns, guilt and shame, consequences of trauma, emotional swings. Once a week, under a contract. 50 minutes - $50.",
-  "s2.c1": "individual", "s2.c2": "Gestalt approach", "s2.c3": "Russian and Ukrainian",
-  "alt.s2": "Bookshelves and a plant by the window",
+  "s2.lead": "Repeating patterns, guilt and shame, consequences of trauma, emotional swings. Once a week, under a contract.",
+  "s2.fig": "50-minute session",
+  "s2.c1": "individual", "s2.c2": "Gestalt approach", "s2.c3": "online or in Kraków",
+  "alt.s2": "Bookshelves in sunlight from a window",
   "s3.kick": "Therapy for teenagers", "s3.h": "A safe space of their own for a teenager",
   "s3.lead": "Anxiety, self-esteem, conflicts at home and at school, moving to another country. Parents - in a separate meeting, by agreement.",
+  "s3.fig": "session · $50",
   "s3.c1": "from age 12", "s3.c2": "no judgement, no pressure", "s3.c3": "online or in Kraków",
   "alt.s3": "A bright room with an armchair and a bookcase",
   "s4.kick": "Couples and family counselling", "s4.h": "Two people in one conversation",
-  "s4.lead": "Partners, spouses, mother and daughter - any two people who find it hard to hear each other. Session 1 h 20 min - $80.",
-  "s4.c1": "couples and families", "s4.c2": "80 minutes", "s4.c3": "online or in Kraków",
+  "s4.lead": "Partners, spouses, mother and daughter - any two people who find it hard to hear each other.",
+  "s4.fig": "session of 1 hour 20 minutes",
+  "s4.c1": "couples and families", "s4.c2": "5-session package -5%", "s4.c3": "online or in Kraków",
   "alt.s4": "Two cups of hot tea on a table",
   "z.kick": "Requests", "z.h": "What people come to me with",
   "z.lead": "Anxiety out of nowhere, tiredness after a holiday, snapping at loved ones - this is not «just pull yourself together». It can be worked through.",
@@ -174,13 +154,15 @@ var EN = {
   "z10.h": "Burnout and procrastination", "z10.p": "I put off even the things I want. I can't make myself start.", "z10.q": "how to tell laziness from burnout",
   "z11.h": "Support for parents", "z11.p": "Parent-child relationships, adolescence, your own exhaustion.", "z11.q": "how to stop shouting at my child",
   "z12.h": "Your own topic", "z12.p": "If you don't see yourself on the list - describe it in two words. We'll sort it out at the first meeting.",
-  "u.kick": "If you recognise yourself",
+  "u.kick": "If you recognise yourself", "u.h": "Phrases people come with",
   "u1": "«I overthink before sleep»", "u2": "«I feel anxious for no reason»", "u3": "«I put off even what I want»", "u4": "«I'm tired even after rest»",
   "u5": "«I snap at the people I love»", "u6": "«I compare myself to others»", "u7": "«I can't make myself start»",
   "u.p": "One conversation to understand what is going on is already work. You don't have to phrase it «correctly».", "u.b": "Message Iryna",
+  "alt.ten": "Warm light through a curtain in the office",
   "p.kick": "For colleagues", "p.h": "Supervision for psychologists and psychotherapists",
   "p.lead": "Case review, «difficult» clients, therapeutic stance and boundaries - in the Gestalt approach. Individually, online or in Kraków.",
-  "p.f1": "In practice since 2021, 1500+ sessions", "p.f2": "Trained with leading Ukrainian and European Gestalt therapists", "p.f3": "Russian and Ukrainian",
+  "p.fig": "sessions since 2021",
+  "p.c1": "Gestalt approach", "p.c2": "Russian and Ukrainian", "p.c3": "terms on request",
   "p.b": "Book supervision", "alt.sup": "An armchair, a floor lamp and plants in a cosy room",
   "c.kick": "Prices", "c.h": "Clear terms",
   "c.lead": "One price for therapy and counselling, online and in person. We work under a contract: format and frequency are agreed at the first session.",
@@ -209,6 +191,7 @@ var EN = {
   "f5.q": "Can we come as a couple?", "f5.a": "Yes. A couples session is 1 hour 20 minutes, $80. Partners, spouses, parent and child.",
   "f6.q": "What if I need help urgently?", "f6.a": "Psychotherapy is not an emergency service. If there is a threat to life, contact the emergency service of your country (in Poland - 112).",
   "y.kick": "Booking", "y.h": "Leave a request", "y.lead": "I answer personally within an hour on WhatsApp. No details needed - two words about your request are enough.",
+  "y.f1": "First meeting - 50 minutes, $50", "y.f2": "Mon-Fri 9:00-20:00, weekends by agreement", "y.f3": "Prefer a messenger - WhatsApp or Telegram",
   "y.name": "Name", "y.namep": "How should I address you", "y.phone": "Phone (WhatsApp)", "y.fmt": "Format", "y.fmt1": "Online", "y.fmt2": "In person in Kraków",
   "y.svc": "Topic", "y.s1": "Individual session", "y.s2": "Short-term counselling", "y.s3": "Long-term psychotherapy", "y.s4": "Teenager", "y.s5": "Couple or family", "y.s6": "Supervision",
   "y.msg": "About the situation (optional)", "y.msgp": "A few words about what is going on", "y.b": "Send via WhatsApp",
@@ -216,7 +199,7 @@ var EN = {
   "y.note": "By clicking the button you agree to the <a href=\"privacy.html\">privacy policy</a>. The data is used only for booking.",
   "kt.kick": "Contacts", "kt.h": "Write or call",
   "kt.l1": "Kraków, city centre. Office address - after booking.", "kt.l2": "Online - worldwide. Russian and Ukrainian.", "kt.l3": "Mon-Fri 9:00-20:00, weekends - by agreement.",
-  "alt.krakow": "Kraków: an archway and a cobbled courtyard in the city centre", "kt.cap": "Office in central Kraków",
+  "alt.krakow": "Kraków: Wawel Castle and the roofs of the old town", "kt.cap": "Office in central Kraków",
   "ft.priv": "Privacy policy",
   "ft.disc": "Psychotherapy does not replace emergency help or medical treatment. The content of sessions is confidential.",
   "ft.copy": "Iryna Syromiatnykova. Gestalt therapist, Kraków and online."
@@ -248,176 +231,157 @@ function applyLang(lang){
   });
   try { localStorage.setItem("is-lang", en ? "en" : "ru"); } catch(e){}
   setWa(en ? "en" : "ru");
-  fillTicker();
   fitText();
-  sizeArches();
   update();
 }
 
 /* ---------------- МЕНЮ ---------------- */
 var burger = document.getElementById("burger");
 var mnav = document.getElementById("mnav");
+var hdr = document.getElementById("hdr");
 function closeMenu(){
   document.body.classList.remove("menu-open");
+  if (hdr) hdr.classList.remove("menu");
   if (burger) burger.setAttribute("aria-expanded", "false");
 }
 if (burger) burger.addEventListener("click", function(){
   var open = document.body.classList.toggle("menu-open");
+  if (hdr) hdr.classList.toggle("menu", open);
   burger.setAttribute("aria-expanded", open ? "true" : "false");
 });
 if (mnav) mnav.addEventListener("click", function(e){ if (e.target.closest("a")) closeMenu(); });
 addEventListener("keydown", function(e){ if (e.key === "Escape") closeMenu(); });
 
-/* ---------------- ЯКОРЯ ---------------- */
-var HH = function(){ return parseFloat(getComputedStyle(root).getPropertyValue("--hh")) || 70; };
+/* ---------------- ЯКОРЯ ----------------
+   Плиты sticky: их getBoundingClientRect врёт, когда они прилипли. Положение в потоке
+   считаем суммой высот предыдущих детей <main>. */
+var main = document.getElementById("main");
+var HH = function(){ return parseFloat(getComputedStyle(root).getPropertyValue("--hh")) || 72; };
+function flowTop(el){
+  var top = main ? main.getBoundingClientRect().top + scrollY : 0;
+  var kids = main ? main.children : [];
+  for (var i = 0; i < kids.length; i++) {
+    if (kids[i] === el) return top;
+    top += kids[i].offsetHeight;
+  }
+  return el.getBoundingClientRect().top + scrollY;
+}
+function targetTop(t){
+  if (t.classList.contains("pw") || t.classList.contains("hero")) return flowTop(t);
+  var sec = t.closest(".sec, .ftr");
+  if (sec && sec !== t) return sec && t.getBoundingClientRect().top + scrollY - HH() - 10;
+  return t.getBoundingClientRect().top + scrollY - HH() - 10;
+}
 document.addEventListener("click", function(e){
   var a = e.target.closest('a[href^="#"]'); if (!a) return;
   var id = a.getAttribute("href").slice(1); if (!id) return;
   var t = document.getElementById(id); if (!t) return;
   e.preventDefault();
   closeMenu();
-  var top = t.getBoundingClientRect().top + scrollY - (t.classList.contains("pw") ? 0 : HH() + 10);
-  scrollTo({ top: Math.max(0, top), behavior: RED ? "auto" : "smooth" });
+  scrollTo({ top: Math.max(0, targetTop(t)), behavior: RED ? "auto" : "smooth" });
   try { history.pushState(null, "", "#" + id); } catch(err){}
 });
 
-/* ---------------- ШАПКА ---------------- */
-var hdr = document.getElementById("hdr");
-function hdrState(){ if (hdr) hdr.classList.toggle("solid", scrollY > 40); }
-
-/* ---------------- АРКИ: размер и контур ----------------
-   Ширина арки - от свободной высоты (дуга должна поместиться целиком), контур SVG - по размеру в px.
-   В герое арка - окно clip-path в полноэкранном кадре; координаты пишутся в --fx/--ft/--aw. */
-var hero = document.getElementById("hero");
-function archPath(svg, w, h){
-  var r = w / 2, p = svg.querySelector("path");
-  if (h < r) r = Math.max(1, h);
-  svg.setAttribute("viewBox", "0 0 " + w + " " + h);
-  p.setAttribute("d", "M0 " + h + "V" + r + "A" + r + " " + r + " 0 0 1 " + w + " " + r + "V" + h);
-}
-function sizeArches(){
-  var W = innerWidth;
-  document.querySelectorAll(".sv .arch").forEach(function(a){
-    a.style.removeProperty("--aw");
-    var h = a.clientHeight;
-    var aw = Math.round(Math.min(640, .86 * W, Math.max(200, 2 * (h - 30))));
-    a.style.setProperty("--aw", aw + "px");
-    archPath(a.querySelector("svg"), aw, h);
-  });
-  document.querySelectorAll(".arch-s, .arch-k").forEach(function(a){
-    archPath(a.querySelector("svg"), a.clientWidth, a.clientHeight);
-  });
-}
-
-/* ---------------- ПЛИТЫ, ИНТРО ГЕРОЯ ----------------
-   Один слушатель scroll через rAF. На .pw пишем --enter/--exit/--stay/--open; на герое --intro. */
-function clamp(v){ return v < 0 ? 0 : (v > 1 ? 1 : v); }
-function easeBreath(t){ return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
-var pws = [].slice.call(document.querySelectorAll(".pw"));
-var heroPw = document.getElementById("top");
+/* ---------------- ШАПКА И ПАНЕЛЬ ---------------- */
+var hero = document.getElementById("top");
 var bar = document.getElementById("bar");
 var kont = document.getElementById("kontakty");
-var introK = 1, introDone = true;
-/* ?intro=0.4 / ?open=0.5 в URL - только для проверки промежуточных фаз (checks/) */
-var DBG = new URLSearchParams(location.search);
-var dbgIntro = parseFloat(DBG.get("intro")), dbgOpen = parseFloat(DBG.get("open"));
+function hdrState(){
+  if (!hdr) return;
+  var H = innerHeight || root.clientHeight;
+  var overHero = hero ? scrollY < hero.offsetHeight - HH() : false;
+  hdr.classList.toggle("over", overHero);
+  hdr.classList.toggle("solid", !overHero);
+  var onKont = kont && kont.getBoundingClientRect().top < H * 0.6;
+  if (bar) bar.classList.toggle("show", scrollY > H * 0.55 && !onKont && !document.body.classList.contains("menu-open"));
+}
 
+/* ---------------- ПЛИТЫ ----------------
+   Один слушатель scroll через rAF. На .pw пишем --enter/--exit/--open. */
+function clamp(v){ return v < 0 ? 0 : (v > 1 ? 1 : v); }
+function easeOut(t){ return 1 - Math.pow(1 - t, 3); }
+function smooth(t){ return t * t * (3 - 2 * t); }
+var pws = [].slice.call(document.querySelectorAll(".pw"));
+var last = {};
+/* ?open=0.5 в URL - только для проверки промежуточных фаз (checks/) */
+var dbgOpen = parseFloat(new URLSearchParams(location.search).get("open"));
+
+function setVar(el, name, v){
+  var s = v.toFixed(3);
+  var key = el.id + name;
+  if (last[key] === s) return;
+  last[key] = s;
+  el.style.setProperty(name, s);
+}
 function update(){
   var H = innerHeight || root.clientHeight;
-  if (root.classList.contains("no-plate")) {
-    hdrState();
-    if (bar) bar.classList.toggle("show", scrollY > H * 0.55 && !(kont && kont.getBoundingClientRect().top < H * 0.6));
-    return;
-  }
+  hdrState();
+  if (root.classList.contains("no-plate")) return;
   pws.forEach(function(pw){
     var r = pw.getBoundingClientRect();
     var enter = clamp(1 - r.top / H);
-    var exit  = clamp(1 - r.bottom / H);
-    var stay  = r.height > H + 1 ? clamp(-r.top / (r.height - H)) : enter;
-    pw.style.setProperty("--enter", enter.toFixed(3));
-    pw.style.setProperty("--exit",  exit.toFixed(3));
-    pw.style.setProperty("--stay",  stay.toFixed(3));
+    var next = pw.nextElementSibling;
+    var exit = next ? clamp(1 - next.getBoundingClientRect().top / H) : 0;
+    var open = !isNaN(dbgOpen) ? dbgOpen : smooth(clamp((enter - .12) / .78));
+    setVar(pw, "--enter", enter);
+    setVar(pw, "--exit", exit);
+    setVar(pw, "--open", open);
     pw.classList.toggle("gone", exit >= 1);
     pw.classList.toggle("on", enter > 0.6);
-    if (pw === heroPw) {
-      var ip = introDone ? 1 : easeBreath(introK);
-      if (!isNaN(dbgIntro)) ip = dbgIntro;
-      pw.style.setProperty("--intro", ip.toFixed(4));
-    } else {
-      /* фигура проступает весь въезд плиты: контур чертится, кадр набирает цвет */
-      var open = !isNaN(dbgOpen) ? dbgOpen : easeBreath(clamp((enter - .22) / .74));
-      pw.style.setProperty("--open", open.toFixed(3));
-    }
+    pw.classList.toggle("open", open >= .999);
   });
-  hdrState();
-  var onKont = kont && kont.getBoundingClientRect().top < H * 0.6;
-  if (bar) bar.classList.toggle("show", scrollY > H * 0.55 && !onKont);
 }
 if (RED) {
   root.classList.add("no-plate");
-  root.classList.add("no-intro");
-  if (hero) hero.classList.add("on");
-  addEventListener("scroll", function(){ hdrState(); if (bar) bar.classList.toggle("show", scrollY > innerHeight * 0.55); }, {passive:true});
-  hdrState();
+  addEventListener("scroll", hdrState, {passive:true});
 } else {
   var tick = false;
   addEventListener("scroll", function(){
     if (tick) return; tick = true;
     requestAnimationFrame(function(){ tick = false; update(); });
   }, {passive:true});
-  addEventListener("load", function(){ sizeArches(); update(); });
-  /* интро 1600 мс: контур арки чертится, фигура набирает цвет, текст поднимается.
-     Пропускаем при хэше / прокрутке - человек из рекламы сразу видит собранный экран. */
-  var skip = location.hash || scrollY > 80;
-  if (skip) {
-    root.classList.add("no-intro");
-    if (hero) hero.classList.add("on");
-    update();
-  } else {
-    introK = 0; introDone = false; update();
-    var t0 = null;
-    var step = function(ts){
-      if (introDone) return;
-      if (t0 === null) t0 = ts;
-      var p = clamp((ts - t0) / 1600);
-      introK = p;
-      if (p > .2 && hero) hero.classList.add("on");
-      update();
-      if (p < 1) requestAnimationFrame(step);
-      else { introDone = true; update(); }
-    };
-    requestAnimationFrame(function(){ requestAnimationFrame(step); });
-    setTimeout(function(){ if (hero) hero.classList.add("on"); }, 600);
-    setTimeout(function(){ if (!introDone) { introDone = true; introK = 1; update(); } }, 2600);
-  }
+  addEventListener("load", update);
 }
-[600, 1500, 3000, 5000].forEach(function(ms){ setTimeout(function(){ sizeArches(); update(); }, ms); });
-window.plateSync = function(){ introDone = true; introK = 1; if (hero) hero.classList.add("on"); sizeArches(); update(); };
-addEventListener("hashchange", function(){ root.classList.add("no-intro"); });
+[400, 1200, 2500].forEach(function(ms){ setTimeout(update, ms); });
+window.plateSync = update;
 
+/* плита выше экрана (низкий телефон, крупный шрифт) - стек выключаем, плиты идут потоком */
+function stackCheck(){
+  if (RED) return;
+  var H = innerHeight || root.clientHeight, over = false;
+  root.classList.remove("no-stack");
+  document.querySelectorAll(".plate").forEach(function(p){ if (p.scrollHeight > H + 2) over = true; });
+  root.classList.toggle("no-stack", over);
+}
 var rsTimer;
 addEventListener("resize", function(){
-  sizeArches(); update();
+  stackCheck(); update();
   clearTimeout(rsTimer);
-  rsTimer = setTimeout(function(){ fillTicker(); fitText(); sizeArches(); update(); }, 200);
+  rsTimer = setTimeout(function(){ fitText(); update(); }, 200);
 });
-if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ fillTicker(); fitText(); sizeArches(); update(); });
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ fitText(); stackCheck(); update(); });
+[300, 1500].forEach(function(ms){ setTimeout(stackCheck, ms); });
 
-/* ---------------- ПОЯВЛЕНИЕ В КАТАЛОЖНЫХ СЕКЦИЯХ ---------------- */
-if (HAS_IO) {
+/* ---------------- ПОЯВЛЕНИЕ В КАТАЛОЖНЫХ СЕКЦИЯХ ----------------
+   .rv - проявление; .rv-ph - те же ламели, после раскрытия маска снимается (.done). */
+function reveal(el){
+  el.classList.add("in");
+  if (el.classList.contains("rv-ph")) setTimeout(function(){ el.classList.add("done"); }, RED ? 0 : 1500);
+}
+if (HAS_IO && !RED) {
   var io = new IntersectionObserver(function(es){
     es.forEach(function(e){
       if (!e.isIntersecting) return;
-      e.target.classList.add("in");
+      reveal(e.target);
       io.unobserve(e.target);
     });
   }, {threshold:.08, rootMargin:"0px 0px -6% 0px"});
   document.querySelectorAll(".rv").forEach(function(el){ io.observe(el); });
   setTimeout(function(){ document.querySelectorAll(".rv:not(.in)").forEach(function(el){
-    if (el.getBoundingClientRect().top < innerHeight) { el.classList.add("in"); io.unobserve(el); }
+    if (el.getBoundingClientRect().top < innerHeight) { reveal(el); io.unobserve(el); }
   }); }, 1500);
 } else {
-  document.querySelectorAll(".rv").forEach(function(el){ el.classList.add("in"); });
+  document.querySelectorAll(".rv").forEach(function(el){ el.classList.add("in", "done"); });
 }
 
 /* ---------------- ФОРМА → WhatsApp ---------------- */
@@ -440,7 +404,6 @@ if (form) form.addEventListener("submit", function(e){
 });
 
 /* ---------------- СТАРТ ----------------
-   Язык выбирается последним: applyLang дёргает sizeArches/update, им нужны уже объявленные узлы.
    ?lang= в URL сильнее localStorage: русское объявление не должно открыть английскую версию. */
 (function initLang(){
   var url = new URLSearchParams(location.search).get("lang");
@@ -452,9 +415,19 @@ if (form) form.addEventListener("submit", function(e){
 document.querySelectorAll(".lang button").forEach(function(b){
   b.addEventListener("click", function(){ applyLang(b.getAttribute("data-lang")); });
 });
-fillTicker();
+/* прямой переход по хэшу: браузер ставит цель под шапку, а плита sticky - доводим сами */
+function gotoHash(){
+  if (!location.hash) return;
+  var ht = document.getElementById(location.hash.slice(1));
+  if (!ht) return;
+  root.classList.add("no-smooth");
+  scrollTo(0, Math.max(0, targetTop(ht)));
+  root.classList.remove("no-smooth");
+  update();
+}
+if (location.hash) setTimeout(gotoHash, 60);
+addEventListener("hashchange", function(){ setTimeout(gotoHash, 0); });
 fitText();
-hdrState();
-sizeArches();
+stackCheck();
 update();
 })();
