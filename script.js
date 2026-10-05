@@ -161,7 +161,7 @@ var EN = {
   "alt.ten": "Warm light through a curtain in the office",
   "p.kick": "For colleagues", "p.h": "Supervision for psychologists and psychotherapists",
   "p.lead": "Case review, «difficult» clients, therapeutic stance and boundaries - in the Gestalt approach. Individually, online or in Kraków.",
-  "p.fig": "sessions since 2021",
+  "p.fig": "hours of supervisor training, Pogodin Gestalt Institute",
   "p.c1": "Gestalt approach", "p.c2": "Russian and Ukrainian", "p.c3": "terms on request",
   "p.b": "Book supervision", "alt.sup": "An armchair, a floor lamp and plants in a cosy room",
   "c.kick": "Prices", "c.h": "Clear terms",
@@ -177,7 +177,15 @@ var EN = {
   "ab.f1": "Gentle and non-judgemental: a safe space for what is hard", "ab.f2": "I don't give advice - I help you find your own solutions and footing",
   "ab.f3": "I work with difficult emotional states and crises",
   "ab.ig": "More about my practice on Instagram",
-  "d.kick": "Education", "d1": "Diploma", "d2": "Certificate", "d.soon": "soon", "alt.doc1": "Diploma", "alt.doc2": "Certificate",
+  "d.kick": "Education", "d.h": "Diplomas and certificates", "d.lb": "Document", "d.prev": "Previous document", "d.next": "Next document", "d.close": "Close",
+  "dc1.t": "Master's in Psychology, with honours", "dc1.o": "Karazin Kharkiv National University · 2024",
+  "dc2.t": "Bachelor's in Psychology", "dc2.o": "Karazin Kharkiv National University · 2023",
+  "dc3.t": "Theory and Practice of Gestalt Therapy, 744 hours", "dc3.o": "Pogodin Gestalt Institute · 2021-2025",
+  "dc4.t": "Supervisor training in the Gestalt approach, 432 hours", "dc4.o": "Pogodin Gestalt Institute · 2024-2026",
+  "dc5.t": "Clinical Approach in Gestalt Therapy, 180 hours", "dc5.o": "National Association of Gestalt Therapists of Ukraine · 2023-2024",
+  "dc6.t": "The Gestalt Approach to Couples Therapy, 180 hours", "dc6.o": "National Association of Gestalt Therapists of Ukraine · 2023-2024",
+  "dc7.t": "Gestalt Approach in Sexuality, 180 hours", "dc7.o": "National Association of Gestalt Therapists of Ukraine · 2022-2023",
+  "dc8.t": "The Dialogue Model of Gestalt Therapy, 180 hours", "dc8.o": "Pogodin Gestalt Institute · 2021-2022",
   "k.kick": "How it works", "k.h": "Four steps to the first meeting",
   "k1.h": "Request", "k1.p": "WhatsApp, Telegram or the form. I answer personally within an hour.",
   "k2.h": "First meeting", "k2.p": "50 minutes: your request and my questions. We decide whether we are a good fit.",
@@ -430,4 +438,30 @@ addEventListener("hashchange", function(){ setTimeout(gotoHash, 0); });
 fitText();
 stackCheck();
 update();
+})();
+
+/* ---------------- ДОКУМЕНТЫ: просмотр крупно ---------------- */
+(function(){
+  var lb = document.getElementById("lb"), docs = [].slice.call(document.querySelectorAll(".doc"));
+  if (!lb || !docs.length || typeof lb.showModal !== "function") return;
+  var img = document.getElementById("lb-img"), t = document.getElementById("lb-t"), o = document.getElementById("lb-o"), cur = 0;
+  function show(i){
+    cur = (i + docs.length) % docs.length;
+    var d = docs[cur];
+    img.src = d.getAttribute("href");
+    img.alt = d.querySelector("img").alt;
+    t.textContent = d.querySelector("b").textContent;
+    o.textContent = d.querySelector(".doc-o").textContent;
+  }
+  docs.forEach(function(d, i){
+    d.addEventListener("click", function(e){ e.preventDefault(); show(i); lb.showModal(); });
+  });
+  lb.querySelector(".lb-prev").addEventListener("click", function(){ show(cur - 1); });
+  lb.querySelector(".lb-next").addEventListener("click", function(){ show(cur + 1); });
+  lb.querySelector(".lb-x").addEventListener("click", function(){ lb.close(); });
+  lb.addEventListener("click", function(e){ if (e.target === lb) lb.close(); });
+  lb.addEventListener("keydown", function(e){
+    if (e.key === "ArrowLeft") show(cur - 1);
+    if (e.key === "ArrowRight") show(cur + 1);
+  });
 })();
