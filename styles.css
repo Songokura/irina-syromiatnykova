@@ -123,7 +123,6 @@ body.menu-open{overflow:hidden}
 
 /* ---------- плиты ---------- */
 .pw{position:relative;height:100svh}
-.pw-hero{height:175svh}
 .plate{position:sticky;top:0;height:100svh;overflow:hidden;transform:scale(calc(1 - .06 * var(--exit)));transform-origin:50% 40%;border-radius:calc(28px * (1 - var(--enter))) calc(28px * (1 - var(--enter))) 0 0;isolation:isolate;color:var(--ink);background:var(--paper)}
 .plate::after{content:"";position:absolute;inset:0;background:var(--paper);opacity:calc(.72 * var(--exit));pointer-events:none;z-index:20}
 .pw.gone .plate{visibility:hidden}
@@ -150,53 +149,57 @@ html.no-plate .arch-clip::before,html.no-plate .arch-clip::after{display:none}
 html.no-plate .arch-line path{stroke-dashoffset:0}
 
 /* ---------- герой ----------
-   Фигура - окно-арка в том же кадре, что и фон (clip-path по тем же координатам), поэтому когда
-   по --stay фон проясняется, арка растворяется в целом кадре. */
-.hero{background:var(--paper);--aw:640px;--fx:400px;--ft:420px}
-.hero .ground img{filter:grayscale(calc(1 - var(--stay)));transform:scale(calc(1.02 + .04 * var(--stay)))}
-.hero .ground::after{opacity:calc(.84 * (1 - var(--stay)))}
-.hero .fig{--open:var(--intro);position:absolute;inset:0;z-index:1;overflow:hidden;clip-path:inset(var(--ft) var(--fx) 0 var(--fx) round calc(var(--aw) / 2) calc(var(--aw) / 2) 0 0);opacity:calc(1 - var(--stay) * var(--stay));pointer-events:none}
-.hero .fig img,.hero .fig picture{position:absolute;inset:0;width:100%;height:100%}
-.hero .fig img{object-fit:cover;object-position:var(--gp,50% 50%);filter:grayscale(calc(1 - var(--open)));transform:scale(calc(1.06 - .04 * var(--open)));transform-origin:50% 70%;will-change:transform}
-.hero .fig::before{content:"";position:absolute;inset:0;z-index:2;background:var(--paper);opacity:calc(.84 * (1 - var(--open)));pointer-events:none}
-.hero .fig::after{content:"";position:absolute;left:var(--fx);right:var(--fx);top:var(--ft);bottom:-4px;z-index:3;border-radius:calc(var(--aw) / 2) calc(var(--aw) / 2) 0 0;box-shadow:inset 0 0 120px 30px var(--paper);opacity:calc(1 - var(--open));pointer-events:none}
-.hero-line{--open:var(--intro);inset:auto;left:var(--fx);top:var(--ft);width:var(--aw);height:calc(100% - var(--ft));z-index:2;opacity:calc(1 - var(--stay) * 1.6)}
-html.no-plate .hero .fig img,html.no-plate .hero .ground img{filter:none;transform:none}
-html.no-plate .hero .fig::before,html.no-plate .hero .fig::after{display:none}
-.hero-txt{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;justify-content:flex-start;padding:calc(var(--hh) + clamp(12px,3svh,34px)) 0 0;color:var(--ink);pointer-events:none;transform:translateY(calc(-60px * var(--stay)));opacity:calc(1 - var(--stay) * 1.5)}
-.hero-txt a,.hero-txt button{pointer-events:auto}
-.hero-txt > .wrap{display:grid;justify-items:center;text-align:center;grid-template-columns:minmax(0,1fr);width:min(860px,100% - 32px)}
-.hero-txt > .wrap > *{opacity:0;transform:translateY(18px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
-.hero.on .hero-txt > .wrap > *{opacity:1;transform:none}
-html.no-plate .hero-txt > .wrap > *{opacity:1;transform:none;transition:none}
-.hero-txt > .wrap > :nth-child(2){transition-delay:.12s}.hero-txt > .wrap > :nth-child(3){transition-delay:.3s}.hero-txt > .wrap > :nth-child(4){transition-delay:.44s}.hero-txt > .wrap > :nth-child(5){transition-delay:.56s}
-.h1{color:var(--ink);margin-top:clamp(12px,2.2svh,24px);max-width:none}
-.h1 .big1{display:block;font:400 clamp(40px,min(6.6vw,9.6svh),92px)/1 var(--fd);letter-spacing:-.01em;white-space:nowrap;transition:letter-spacing 1.4s var(--breath)}
-.hero:not(.on) .h1 .big1{letter-spacing:-.04em}
-.h1 .name{display:block;font:400 clamp(20px,min(2.3vw,3.4svh),30px)/1.2 var(--fd);font-style:italic;margin-top:.45em;color:var(--plum);letter-spacing:.01em}
-.hero .lead{color:var(--ink2);margin-top:clamp(10px,1.8svh,18px);max-width:none}
-.hero-cta{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:clamp(16px,2.6svh,28px)}
-.hero-cta .btn{min-width:240px}
-.hero .tlink{margin-top:14px}
-.ticker-w{position:absolute;left:0;right:0;bottom:0;z-index:6;height:44px;display:flex;align-items:center;overflow:hidden;border-top:1px solid rgba(36,31,40,.1);background:rgba(244,239,242,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);color:var(--mut)}
-.ticker{display:flex;white-space:nowrap;animation:tk var(--tkd,60s) linear infinite;will-change:transform}
-.ticker b{flex:0 0 auto;font:500 10.5px/1 var(--ft);letter-spacing:.2em;text-transform:uppercase;padding:0 26px;position:relative}
-.ticker b::before{content:"";position:absolute;left:-4px;top:50%;width:8px;height:5px;margin-top:-3px;border:1px solid var(--plum);border-bottom:0;border-radius:4px 4px 0 0}
-@keyframes tk{to{transform:translateX(calc(-1 * var(--tkw,1000px)))}}
+   Статичный кадр в полном цвете, без анимаций: свет из окна на кресле справа,
+   текст слева на тёмной части кадра. Шапка над героем светлая, после прокрутки - обычная. */
+.hero-w{position:relative}
+.hero{position:relative;height:100svh;min-height:600px;overflow:hidden;background:#1c1714;color:#fff;isolation:isolate}
+.hero-bg,.hero-bg img{position:absolute;inset:0;width:100%;height:100%}
+.hero-bg img{object-fit:cover;object-position:62% 50%}
+.hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(90deg,rgba(20,15,14,.82) 0%,rgba(20,15,14,.62) 34%,rgba(20,15,14,.12) 62%,rgba(20,15,14,0) 78%),
+             linear-gradient(180deg,rgba(20,15,14,.45) 0%,rgba(20,15,14,0) 22%)}
+.hero-txt{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:center;padding:var(--hh) 0 clamp(24px,5svh,56px)}
+.hero-txt > .wrap{display:grid;justify-items:start;text-align:left;grid-template-columns:minmax(0,1fr);width:min(1400px,100% - 56px)}
+.hero-txt > .wrap > *{max-width:700px}
+.hero .kick{justify-content:flex-start;color:rgba(255,255,255,.78)}
+.hero .kick::before{border-color:#E6C58F}
+.h1{color:#fff;margin-top:clamp(12px,2.2svh,24px)}
+.h1 .big1{display:block;font:400 clamp(44px,min(6.4vw,10svh),96px)/1 var(--fd);letter-spacing:-.01em;white-space:nowrap}
+.h1 .name{display:block;font:400 clamp(20px,min(2.3vw,3.4svh),30px)/1.2 var(--fd);font-style:italic;margin-top:.45em;color:#E6C58F;letter-spacing:.01em}
+.hero .lead{color:rgba(255,255,255,.88);margin-top:clamp(12px,2svh,20px);font-size:16px;line-height:1.6;max-width:640px}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:clamp(18px,3svh,32px)}
+.hero-cta .btn{min-width:230px}
+.hero .btn-plum{box-shadow:0 18px 30px -18px rgba(0,0,0,.7)}
+.hero .btn-ghost{color:#fff;border-color:rgba(255,255,255,.45)}
+.hero .btn-ghost:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+.hero .tlink{margin-top:16px;color:rgba(255,255,255,.82);border-color:rgba(255,255,255,.3)}
+.hero .tlink:hover{color:#fff;border-color:#fff}
+/* шапка над героем - светлая */
+body:not(.menu-open) .hdr:not(.solid){color:#fff}
+body:not(.menu-open) .hdr:not(.solid) .lg2{color:#E6C58F}
+body:not(.menu-open) .hdr:not(.solid) .nav a{color:rgba(255,255,255,.86)}
+body:not(.menu-open) .hdr:not(.solid) .nav a:hover{color:#fff}
+body:not(.menu-open) .hdr:not(.solid) .igc{border-color:rgba(255,255,255,.4)}
+body:not(.menu-open) .hdr:not(.solid) .call{color:#fff;border-color:rgba(255,255,255,.45)}
+body:not(.menu-open) .hdr:not(.solid) .call svg{color:#E6C58F}
+body:not(.menu-open) .hdr:not(.solid) .lang{background:rgba(255,255,255,.16)}
+body:not(.menu-open) .hdr:not(.solid) .lang button{color:rgba(255,255,255,.85)}
+body:not(.menu-open) .hdr:not(.solid) .lang button.is-active{color:var(--ink)}
+body:not(.menu-open) .hdr:not(.solid) .burger{color:#fff}
 @media(max-width:760px){
-  .hero,.hero .ground img,.hero .fig img{--gp:28% 50%}
-  .hero-txt{padding-top:calc(var(--hh) + 8px)}
+  .hero-bg img{object-position:50% 50%}
+  .hero::after{background:linear-gradient(180deg,rgba(20,15,14,.78) 0%,rgba(20,15,14,.6) 42%,rgba(20,15,14,.15) 66%,rgba(20,15,14,.35) 100%)}
+  .hero-txt{justify-content:flex-start;padding-top:calc(var(--hh) + 18px)}
+  .hero-txt > .wrap{width:calc(100% - 32px)}
   .hero .kick{font-size:9.5px;letter-spacing:.14em;white-space:nowrap}
   .h1 .big1{font-size:clamp(34px,min(10.4vw,6.2svh),46px);white-space:normal;line-height:1.02}
   .h1 .name{font-size:clamp(17px,4.6vw,20px)}
   .hero .lead{font-size:14px;line-height:1.5;margin-top:10px}
-  .hero-cta{margin-top:14px;gap:8px;width:100%}
+  .hero-cta{margin-top:16px;gap:8px;width:100%}
   .hero-cta .btn{flex:1 1 100%;height:48px;min-width:0}
   .hero .tlink{margin-top:10px;font-size:12.5px;white-space:normal}
-  .ticker-w{height:38px}
 }
-@media(max-width:760px) and (max-height:760px){.hero .tlink{display:none}.hero .lead{font-size:13.5px;margin-top:8px}}
-@media(max-width:760px) and (max-height:680px){.hero-cta .btn-ghost{display:none}}
+@media(max-width:760px) and (max-height:700px){.hero .tlink{display:none}.hero .lead{font-size:13.5px;margin-top:8px}}
 @media(min-width:761px) and (max-height:720px){.hero .lead{font-size:15px;margin-top:8px}.hero .tlink{display:none}.hero-cta{margin-top:14px}.h1 .big1{font-size:clamp(36px,7.6svh,60px)}}
 
 /* ---------- плиты услуг: текст сверху по центру, арка-дверь из пола ---------- */
@@ -428,9 +431,7 @@ html.no-plate .says li{transform:none}
 
 /* ---------- reduced motion ---------- */
 @media(prefers-reduced-motion:reduce){
-  .ticker{animation:none}
   .hero-txt > .wrap > *,.sv-txt > *,.rv,.says li{opacity:1;transform:none;transition:none}
-  .h1 .big1{transition:none}
   .btn,.step,.price,.card,.nav a::after,.arch-clip img{transition:none}
   .arch-line path{transition:none}
 }

@@ -29,10 +29,10 @@
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="image" href="assets/hero.webp" media="(min-width:761px)">
-<link rel="preload" as="image" href="assets/hero-m.webp" media="(max-width:760px)">
+<link rel="preload" as="image" href="assets/hero-room.webp" media="(min-width:761px)">
+<link rel="preload" as="image" href="assets/hero-room-m.webp" media="(max-width:760px)">
 <link href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,500;1,400&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20261002-1">
+<link rel="stylesheet" href="styles.css?v=20261005-1">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -123,26 +123,17 @@
 <main>
 
 <!-- ================= ГЕРОЙ ================= -->
-<div class="pw pw-hero" id="top">
-  <section class="plate hero" id="hero" aria-label="Главный экран" data-i-aria="a.hero">
-    <div class="ground">
-      <picture>
-        <source media="(max-width:760px)" srcset="assets/hero-m.webp">
-        <img src="assets/hero.webp" alt="" fetchpriority="high" decoding="async">
-      </picture>
-    </div>
-    <div class="fig" aria-hidden="true">
-      <picture>
-        <source media="(max-width:760px)" srcset="assets/hero-m.webp">
-        <img src="assets/hero.webp" alt="Кабинет психотерапевта: два кресла и мягкий свет" data-i-alt="alt.hero" fetchpriority="high" decoding="async">
-      </picture>
-    </div>
-    <svg class="arch-line hero-line" aria-hidden="true"><path pathLength="1" d="M0 0"/></svg>
+<div class="hero-w" id="top">
+  <section class="hero" id="hero" aria-label="Главный экран" data-i-aria="a.hero">
+    <picture class="hero-bg">
+      <source media="(max-width:760px)" srcset="assets/hero-room-m.webp">
+      <img src="assets/hero-room.webp" alt="Два кресла у окна в мягком дневном свете" data-i-alt="alt.hero" fetchpriority="high" decoding="async" width="2560" height="1707">
+    </picture>
     <div class="hero-txt">
       <div class="wrap">
         <p class="kick" data-i="h.kick">Краков · онлайн по всему миру · практика с 2021</p>
         <h1 class="h1"><span class="big1" data-i="h.big">Гештальт-терапевт</span><span class="name" data-i="h.name">Ирина Сыромятникова</span></h1>
-        <p class="lead" data-i="h.lead">Индивидуальная терапия, пары, подростки, супервизия. 1500+ консультаций. Очно в центре Кракова и онлайн. Сессия 50 минут - 50 $.</p>
+        <p class="lead" data-i="h.lead">Индивидуальная терапия, пары, подростки, супервизия. 1500+ консультаций. Очно в центре Кракова и онлайн. Сессия 50 минут - 50 $.</p>
         <div class="hero-cta">
           <a class="btn btn-plum" data-wa="hero" href="https://wa.me/380975280500"><svg width="18" height="18"><use href="#ic-wa"/></svg><span data-i="h.b1">Записаться в WhatsApp</span></a>
           <a class="btn btn-ghost" href="#ceny"><span data-i="h.b2">Услуги и цены</span><svg class="ar" width="18" height="18"><use href="#ic-ar"/></svg></a>
@@ -150,7 +141,6 @@
         <a class="tlink" href="https://www.instagram.com/ira.syromiatnykova/" target="_blank" rel="noopener"><svg width="16" height="16"><use href="#ic-ig"/></svg><span data-i="h.ig">Мысли и практика в Instagram</span><svg width="14" height="14"><use href="#ic-ar"/></svg></a>
       </div>
     </div>
-    <div class="ticker-w" aria-hidden="true"><div class="ticker" data-tick="svc"></div></div>
   </section>
 </div>
 
@@ -491,6 +481,6 @@
   <a class="bar-ig" href="https://www.instagram.com/ira.syromiatnykova/" target="_blank" rel="noopener" aria-label="Instagram"><svg width="18" height="18"><use href="#ic-ig"/></svg></a>
 </nav>
 
-<script src="script.js?v=20261002-1"></script>
+<script src="script.js?v=20261005-1"></script>
 </body>
 </html>

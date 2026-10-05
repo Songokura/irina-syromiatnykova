@@ -142,7 +142,7 @@ var EN = {
   "h.big": "Gestalt therapist", "h.name": "Iryna Syromiatnykova",
   "h.lead": "Individual therapy, couples, teenagers, supervision. 1500+ sessions. In person in central Kraków and online. 50-minute session - $50.",
   "h.b1": "Book via WhatsApp", "h.b2": "Services and prices", "h.ig": "Thoughts and practice on Instagram",
-  "alt.hero": "Therapist's office: two armchairs and soft light",
+  "alt.hero": "Two armchairs by the window in soft daylight",
   "b.wa": "Book via WhatsApp", "b.tg": "Message on Telegram", "b.tg2": "Telegram", "b.write": "Write", "b.wa2": "Message on WhatsApp", "b.book": "Book a session", "b.pack": "Get a package",
   "s1.kick": "Short-term counselling", "s1.h": "Up to 10 meetings - one specific request",
   "s1.lead": "Anxiety, a crisis, a hard decision, relationships, boundaries. A clear goal and a clear timeframe. 50 minutes - $50.",
@@ -307,21 +307,6 @@ function sizeArches(){
   document.querySelectorAll(".arch-s, .arch-k").forEach(function(a){
     archPath(a.querySelector("svg"), a.clientWidth, a.clientHeight);
   });
-  if (hero) {
-    var txt = hero.querySelector(".hero-txt > .wrap");
-    var H = hero.clientHeight;
-    var tick = hero.querySelector(".ticker-w");
-    var bottom = H - (tick ? tick.offsetHeight : 44);
-    var top = txt ? Math.round(txt.getBoundingClientRect().bottom - hero.getBoundingClientRect().top + (W <= 760 ? 16 : 26)) : H * .5;
-    var h = Math.max(120, bottom - top);
-    var aw = Math.round(Math.min(640, .86 * W, Math.max(200, 2 * (h - 24))));
-    var fx = Math.round((W - aw) / 2);
-    hero.style.setProperty("--aw", aw + "px");
-    hero.style.setProperty("--fx", fx + "px");
-    hero.style.setProperty("--ft", top + "px");
-    var svg = hero.querySelector(".hero-line");
-    if (svg) archPath(svg, aw, H - top);
-  }
 }
 
 /* ---------------- ПЛИТЫ, ИНТРО ГЕРОЯ ----------------
