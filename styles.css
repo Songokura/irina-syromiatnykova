@@ -103,18 +103,14 @@ body.menu-open .burger span:nth-child(3){transform:translateY(-6.6px) rotate(-45
 .hero .tlink:hover{color:#fff;border-color:#fff}
 
 /* ---------- плиты ---------- */
-.pw{position:sticky;top:0;height:100svh;z-index:1;overflow:hidden;background:var(--bg);isolation:isolate;
-  --enter:0;--exit:0;--open:0;
-  border-radius:calc(28px * (1 - var(--enter))) calc(28px * (1 - var(--enter))) 0 0;
-  transform:scale(calc(1 - .06 * var(--exit)));transform-origin:50% 40%}
-.pw::after{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;background:#1F2422;opacity:calc(.32 * var(--exit))}
-.pw.gone{visibility:hidden}
+/* 12.10.2026 по просьбе клиента: плиты идут обычной прокруткой, без наезда следующей на текущую */
+.pw{position:relative;height:100svh;z-index:1;overflow:hidden;background:var(--bg);isolation:isolate;
+  --enter:0;--exit:0;--open:0}
 .plate{position:relative;height:100%;display:grid;grid-template-columns:46% 54%}
 .pw.flip .plate{grid-template-columns:54% 46%}
 .pw.flip .ph{order:2}
 .ph{position:relative;margin:0;height:100%;overflow:hidden;background:var(--bg-3)}
-.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:var(--pp,50% 50%);
-  transform:scale(calc(1 + .05 * var(--exit)));transform-origin:50% 50%}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:var(--pp,50% 50%)}
 /* сигнатура: ламели жалюзи раскрываются по --open (0 - закрыты, 1 - кадр чистый) */
 .pw:not(.open) .ph{
   --a:calc(var(--slat) * (1 - var(--open)) * .5);
@@ -193,6 +189,13 @@ body.menu-open .burger span:nth-child(3){transform:translateY(-6.6px) rotate(-45
 .card-cta h3{color:#fff;margin-top:0;font:300 italic 24px/1.2 var(--fd)}
 .card-cta p{color:rgba(255,255,255,.82)}
 .card-cta .btn{margin-top:auto;padding-top:0;align-self:flex-start;margin-top:22px}
+/* 12 тем ровной сеткой, призыв - полосой на всю ширину */
+.card-cta{grid-column:1/-1}
+@media(min-width:761px){
+  .card-cta{display:grid;grid-template-columns:auto 1fr auto;align-items:center;column-gap:clamp(20px,3vw,48px);padding-bottom:28px}
+  .card-cta p{margin:0}
+  .card-cta .btn{margin-top:0}
+}
 
 /* цены */
 .prices{display:grid;grid-template-columns:1fr 1fr;gap:16px}

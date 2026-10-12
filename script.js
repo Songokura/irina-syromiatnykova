@@ -21,7 +21,7 @@ var root = document.documentElement;
 function conv(key){
   var id = (window.CO_CONV || {})[key];
   if (!id || typeof window.gtag !== "function") return;
-  window.gtag("event", "conversion", {send_to: id, value: 1.0, currency: "USD", transport_type: "beacon"});
+  window.gtag("event", "conversion", {send_to: id, value: 1.0, currency: "EUR", transport_type: "beacon"});
 }
 window.addEventListener("click", function(e){
   var a = e.target.closest ? e.target.closest("a[href]") : null;
@@ -33,7 +33,7 @@ window.addEventListener("click", function(e){
 }, true);
 
 /* ---------------- ТЕКСТЫ WhatsApp ПО ТЕМАМ ---------------- */
-var HI = { ru: "Здравствуйте, Ирина! Пишу с сайта.", en: "Hello Irina! I'm writing from your website." };
+var HI = { ru: "Здравствуйте, Ирина! Пишу с сайта.", uk: "Вітаю, Ірино! Пишу з сайту.", en: "Hello Irina! I'm writing from your website." };
 var WA_TXT = {
   ru: {
     hero:           " Хочу записаться на сессию. Коротко о запросе: ",
@@ -49,13 +49,37 @@ var WA_TXT = {
     depressiya:     " Тема: нет сил, ничего не радует. Коротко: ",
     travma:         " Тема: последствия травматического опыта. Коротко: ",
     krizisy:        " Тема: кризис, развод, расставание. Коротко: ",
+    trudnosti:      " Тема: трудности в отношениях. Коротко: ",
     otnosheniya:    " Тема: отношения, близость, сексуальность. Коротко: ",
-    lgbt:           " Тема: ориентация, принятие себя, отношения. Коротко: ",
+    lgbt:           " Тема: ориентация, принятие себя, семья, границы. Коротко: ",
     samoocenka:     " Тема: самооценка, границы, зависимость от чужого мнения. Коротко: ",
     scenarii:       " Тема: повторяющиеся сценарии в отношениях. Коротко: ",
     vina:           " Тема: вина, стыд, срывы на близких. Коротко: ",
     vygoranie:      " Тема: выгорание, прокрастинация. Коротко: ",
-    roditeli:       " Тема: родительство, отношения с ребёнком. Коротко: "
+    roditeli:       " Тема: родительство, отношения с ребёнком, особенные дети. Коротко: "
+  },
+  uk: {
+    hero:           " Хочу записатися на сесію. Коротко про запит: ",
+    kratkosrochnoe: " Цікавить короткострокове консультування (до 10 зустрічей). Запит: ",
+    terapiya:       " Хочу почати тривалу психотерапію. Коротко про те, що відбувається: ",
+    podrostki:      " Хочу записати підлітка на терапію. Вік і коротко про ситуацію: ",
+    pary:           " Хочемо прийти вдвох (парна сесія). Коротко про ситуацію: ",
+    superviziya:    " Хочу записатися на супервізію. Коротко про випадок: ",
+    uznayote:       " Однією фразою про те, що відбувається: ",
+    paket:          " Хочу взяти пакет сесій (5 або 10). Формат: ",
+    kontakty:       " Питання: ",
+    trevoga:        " Тема: тривога, панічні атаки. Коротко: ",
+    depressiya:     " Тема: немає сил, ніщо не тішить. Коротко: ",
+    travma:         " Тема: наслідки травматичного досвіду. Коротко: ",
+    krizisy:        " Тема: криза, розлучення, розставання. Коротко: ",
+    trudnosti:      " Тема: труднощі у стосунках. Коротко: ",
+    otnosheniya:    " Тема: стосунки, близькість, сексуальність. Коротко: ",
+    lgbt:           " Тема: орієнтація, прийняття себе, сім'я, межі. Коротко: ",
+    samoocenka:     " Тема: самооцінка, межі, залежність від чужої думки. Коротко: ",
+    scenarii:       " Тема: повторювані сценарії у стосунках. Коротко: ",
+    vina:           " Тема: провина, сором, зриви на близьких. Коротко: ",
+    vygoranie:      " Тема: вигорання, прокрастинація. Коротко: ",
+    roditeli:       " Тема: батьківство, стосунки з дитиною, особливі діти. Коротко: "
   },
   en: {
     hero:           " I'd like to book a session. Briefly, my request: ",
@@ -71,6 +95,7 @@ var WA_TXT = {
     depressiya:     " Topic: no energy, nothing brings joy. Briefly: ",
     travma:         " Topic: consequences of trauma. Briefly: ",
     krizisy:        " Topic: crisis, divorce, break-up. Briefly: ",
+    trudnosti:      " Topic: relationship difficulties. Briefly: ",
     otnosheniya:    " Topic: relationships, intimacy, sexuality. Briefly: ",
     lgbt:           " Topic: orientation, self-acceptance, relationships. Briefly: ",
     samoocenka:     " Topic: self-esteem, boundaries, dependence on others' opinions. Briefly: ",
@@ -79,6 +104,11 @@ var WA_TXT = {
     vygoranie:      " Topic: burnout, procrastination. Briefly: ",
     roditeli:       " Topic: parenting, relationship with my child. Briefly: "
   }
+};
+var FORM_TXT = {
+  ru: ["Заявка.", "Имя", "Телефон", "Тема", "Формат", "О ситуации"],
+  en: ["Request.", "Name", "Phone", "Topic", "Format", "About the situation"],
+  uk: ["Заявка.", "Ім'я", "Телефон", "Тема", "Формат", "Про ситуацію"]
 };
 function waUrl(t){ return "https://wa.me/" + CONTACT.wa + "?text=" + encodeURIComponent(t); }
 function setWa(lang){
@@ -100,59 +130,306 @@ function fitText(){
   });
 }
 
-/* ---------------- ЯЗЫК RU / EN ----------------
+/* ---------------- ЯЗЫК RU / UK / EN ----------------
    Русский берётся из разметки при старте, английский - словарь ниже. */
 var RU = {};
+/* украинский словарь - ключи те же, что у EN */
+var UK = {
+  "t.title": "Гештальт-терапевт Ірина Сиром'ятнікова - психотерапія онлайн і в Кракові",
+  "t.desc": "Гештальт-терапевт Ірина Сиром'ятнікова: індивідуальна терапія, короткострокове консультування, підлітки, пари, супервізія. Очно в центрі Кракова та онлайн по всьому світу. 2000+ консультацій. Сесія 50 хвилин - 50 €. Російська та українська.",
+  "t.ogt": "Гештальт-терапевт Ірина Сиром'ятнікова - онлайн і в Кракові",
+  "t.ogd": "Індивідуальна терапія, пари, підлітки, супервізія. 2000+ консультацій. Сесія 50 хвилин - 50 €. Очно в Кракові та онлайн.",
+  "a.home": "Ірина Сиром'ятнікова, гештальт-терапевт - на головну",
+  "a.nav": "Розділи",
+  "a.call": "Зателефонувати +380 97 528 05 00",
+  "a.lang": "Мова сайту",
+  "a.menu": "Меню",
+  "a.hero": "Головний екран",
+  "a.bar": "Швидкий зв'язок",
+  "a.call2": "Зателефонувати",
+  "lg1": "Ірина Сиром'ятнікова",
+  "lg2": "гештальт-терапевт",
+  "n1": "Послуги",
+  "n2": "Запити",
+  "n3": "Ціни",
+  "n4": "Про мене",
+  "n5": "Питання",
+  "n6": "Контакти",
+  "m1": "Короткострокове консультування",
+  "m2": "Тривала психотерапія",
+  "m3": "Психотерапія підлітків",
+  "m4": "Парне та сімейне консультування",
+  "m5": "Супервізія",
+  "m6": "З чим приходять",
+  "m7": "Ціни",
+  "m8": "Про мене",
+  "m9": "Питання",
+  "m10": "Контакти",
+  "h.kick": "Краків · онлайн по всьому світу",
+  "h.big": "Гештальт-терапевт",
+  "h.name": "Ірина Сиром'ятнікова",
+  "h.lead": "Індивідуальна терапія, пари, підлітки, супервізія. 2000+ консультацій. Очно в центрі Кракова та онлайн. Сесія 50 хвилин - 50 €.",
+  "h.b1": "Записатися у WhatsApp",
+  "h.b2": "Послуги та ціни",
+  "h.ig": "Думки та практика в Instagram",
+  "alt.hero": "Човен на спокійній воді біля берега на заході сонця",
+  "b.wa": "Записатися у WhatsApp",
+  "b.tg": "Написати в Telegram",
+  "b.tg2": "Telegram",
+  "b.write": "Написати",
+  "b.wa2": "Написати у WhatsApp",
+  "b.book": "Записатися",
+  "b.pack": "Обрати пакет",
+  "s1.kick": "Короткострокове консультування",
+  "s1.h": "До 10 зустрічей з одним запитом",
+  "s1.lead": "Тривога, криза, складне рішення, стосунки, межі. Чітка мета і зрозумілий термін.",
+  "s1.fig": "зустрічей · 50 € за 50 хвилин",
+  "s1.c1": "онлайн або в Кракові",
+  "s1.c2": "пакет 10 сесій -10 %",
+  "s1.c3": "російська та українська",
+  "alt.s1": "Ірина Сиром'ятнікова на дивані у світлому інтер'єрі",
+  "s2.kick": "Тривала психотерапія",
+  "s2.h": "Глибше, ніж симптом: терапія у власному ритмі",
+  "s2.lead": "Повторювані сценарії, провина й сором, наслідки травми, емоційні гойдалки. Раз на тиждень, за контрактом.",
+  "s2.fig": "сесія 50 хвилин",
+  "s2.c1": "індивідуально",
+  "s2.c2": "гештальт-підхід",
+  "s2.c3": "онлайн або в Кракові",
+  "alt.s2": "Ірина Сиром'ятнікова з книгою біля стіни",
+  "s3.kick": "Психотерапія підлітків",
+  "s3.h": "Підлітку - власний безпечний простір",
+  "s3.lead": "Тривога, самооцінка, конфлікти вдома і в школі, переїзд до іншої країни. Зустріч із батьками - за домовленістю.",
+  "s3.fig": "сесія · 50 €",
+  "s3.c1": "з 12 років",
+  "s3.c2": "без оцінок і тиску",
+  "s3.c3": "онлайн або в Кракові",
+  "alt.s3": "Ірина Сиром'ятнікова в білій сорочці біля старовинного фонтану",
+  "s4.kick": "Парне та сімейне консультування",
+  "s4.h": "Двоє в одній розмові",
+  "s4.lead": "Партнери, подружжя, мати й донька - будь-які двоє, кому важко почути одне одного.",
+  "s4.fig": "сесія 1 година 20 хвилин",
+  "s4.c1": "пари та сім'ї",
+  "s4.c2": "пакет 10 сесій -10 %",
+  "s4.c3": "онлайн або в Кракові",
+  "alt.s4": "Ірина Сиром'ятнікова в кав'ярні під склепіннями",
+  "z.kick": "Запити",
+  "z.h": "З чим до мене приходять",
+  "z.lead": "Тривога на рівному місці, втома після відпочинку, зриви на близьких - це не «треба взяти себе в руки». З цим можна розібратися.",
+  "z1.h": "Тривога та панічні атаки",
+  "z1.p": "Напруга без причини, накручування перед сном, страх, що щось станеться.",
+  "z1.q": "як перестати накручувати себе перед сном",
+  "z2.h": "Депресивні стани",
+  "z2.p": "Ніщо не тішить, немає сил, самотність, утома не минає навіть після відпочинку.",
+  "z2.q": "що робити, якщо ніщо не тішить",
+  "z3.h": "Наслідки травми",
+  "z3.p": "Минуле, яке й далі керує теперішнім. Непростий дитячий досвід.",
+  "z3.q": "як перестати боятися",
+  "z4.h": "Кризи та розлучення",
+  "z4.p": "Розставання, переїзд, втрата - коли звична опора зникла.",
+  "z4.q": "як жити далі після розлучення",
+  "z13.q": "чому ми весь час сваримося",
+  "z13.h": "Труднощі у стосунках",
+  "z13.p": "Часті сварки, нерозуміння, ревнощі, втрата близькості, складнощі з довірою, образи, різні погляди на життя, труднощі з вираженням почуттів і бажань, кризи у стосунках і розставання.",
+  "z5.h": "Стосунки та сексуальність",
+  "z5.p": "Близькість, довіра, бажання, одні й ті самі сварки. Ізоляція та неможливість поговорити.",
+  "z5.q": "як налагодити стосунки з партнером",
+  "z6.h": "ЛГБТ та орієнтація",
+  "z6.p": "Прийняття себе, камінг-аут, сімейні конфлікти та особисті межі - без осуду.",
+  "z6.q": "як прийняти себе",
+  "z7.h": "Самооцінка та межі",
+  "z7.p": "Залежність від чужої думки, порівняння з іншими, невміння сказати «ні».",
+  "z7.q": "як перестати залежати від чужої думки",
+  "z8.h": "Повторювані сценарії",
+  "z8.p": "Ті самі люди, конфлікти й глухі кути - в різних декораціях.",
+  "z8.q": "чому я знову обираю не тих",
+  "z9.h": "Провина, сором, дратівливість",
+  "z9.p": "Зриваюся на близьких, потім звинувачую себе. І так по колу.",
+  "z9.q": "як не зриватися на близьких",
+  "z10.h": "Вигорання та прокрастинація",
+  "z10.p": "Відкладаю навіть те, чого хочу. Не можу змусити себе почати.",
+  "z10.q": "як відрізнити лінощі від вигорання",
+  "z11.h": "Підтримка батьків",
+  "z11.p": "Дитячо-батьківські стосунки, підлітковий вік, батьківство особливих дітей, власна втома.",
+  "z11.q": "як не реагувати на дитину криком",
+  "z12.h": "Своя тема",
+  "z12.p": "Якщо не знайшли себе в списку - опишіть двома словами. Розберемося на першій зустрічі.",
+  "u.kick": "Якщо ви впізнаєте себе",
+  "u.h": "Фрази, з якими приходять",
+  "u1": "«Накручую себе перед сном»",
+  "u2": "«Тривожно на рівному місці»",
+  "u3": "«Відкладаю навіть те, чого хочу»",
+  "u4": "«Втомлююся навіть після відпочинку»",
+  "u5": "«Зриваюся на близьких»",
+  "u6": "«Порівнюю себе з іншими»",
+  "u7": "«Не можу змусити себе почати»",
+  "u.p": "Одна розмова, щоб зрозуміти, що відбувається, - це вже робота. Не потрібно формулювати «правильно».",
+  "u.b": "Написати Ірині",
+  "alt.ten": "Дерев'яний причал на ранковому озері",
+  "p.kick": "Для колег",
+  "p.h": "Супервізія для психологів і психотерапевтів",
+  "p.lead": "Розбір випадків, «складні» клієнти, терапевтична позиція та межі - у гештальт-підході. Індивідуально, онлайн або в Кракові.",
+  "p.fig": "години підготовки супервізора, Інститут гештальту Погодіна",
+  "p.c1": "гештальт-підхід",
+  "p.c2": "російська та українська",
+  "p.c3": "умови під час запису",
+  "p.b": "Записатися на супервізію",
+  "alt.sup": "Ірина Сиром'ятнікова працює за ноутбуком",
+  "c.kick": "Ціни",
+  "c.h": "Зрозумілі умови",
+  "c.lead": "Одна ціна для терапії та консультування, онлайн і очно. Робота за контрактом: формат і частоту зустрічей узгоджуємо на першій сесії.",
+  "c1.k": "Індивідуальна сесія",
+  "c1.d": "50 хвилин. Терапія або консультування, онлайн або в Кракові.",
+  "c2.k": "Пакети сесій",
+  "c2.s": "-5 % / -10 %",
+  "c2.d": "Індивідуально: 5 сесій - знижка 5 %, 10 сесій - знижка 10 %. Пари: 10 сесій - знижка 10 %.",
+  "c3.k": "Парна сесія",
+  "c3.d": "1 година 20 хвилин. Партнери, подружжя, сім'я - будь-які двоє.",
+  "c.fee": "Супервізія для колег - умови під час запису. Відповідаю особисто протягом години.",
+  "ab.stub": "Портрет Ірини",
+  "ab.stub2": "фото незабаром",
+  "alt.portrait": "Ірина Сиром'ятнікова, гештальт-терапевт",
+  "ab.kick": "Про мене",
+  "ab.h": "Ірина Сиром'ятнікова",
+  "ab.lead": "Гештальт-терапевт. Навчалася у провідних українських та європейських гештальт-терапевтів. Працюю російською та українською мовами з дорослими, підлітками та парами.",
+  "ab.st1": "консультацій",
+  "ab.st2": "початок практики",
+  "ab.st3": "років із найдавнішим клієнтом",
+  "ab.f1": "Дбайливо і без осуду: безпечний простір для складного",
+  "ab.f2": "Не даю порад - допомагаю знайти власні рішення та опору",
+  "ab.f3": "Працюю зі складними емоційними станами та кризами",
+  "ab.ig": "Більше про практику в Instagram",
+  "d.kick": "Освіта",
+  "d.h": "Дипломи та сертифікати",
+  "d.lb": "Документ",
+  "d.prev": "Попередній документ",
+  "d.next": "Наступний документ",
+  "d.close": "Закрити",
+  "dc1.t": "Магістр психології, диплом з відзнакою",
+  "dc1.o": "ХНУ імені Каразіна · 2024",
+  "dc2.t": "Бакалавр психології",
+  "dc2.o": "ХНУ імені Каразіна · 2023",
+  "dc3.t": "Теорія і практика гештальт-терапії, 744 години",
+  "dc3.o": "Інститут гештальту Погодіна · 2021-2025",
+  "dc4.t": "Підготовка супервізора в гештальт-підході, 432 години",
+  "dc4.o": "Інститут гештальту Погодіна · 2024-2026",
+  "dc5.t": "Клінічний підхід у гештальт-терапії, 180 годин",
+  "dc5.o": "НАГТУ · 2023-2024",
+  "dc6.t": "Гештальт-підхід у роботі з парами, 180 годин",
+  "dc6.o": "НАГТУ · 2023-2024",
+  "dc7.t": "Робота із сексуальною тематикою, 180 годин",
+  "dc7.o": "НАГТУ · 2022-2023",
+  "dc8.t": "Діалогова модель гештальт-терапії, 180 годин",
+  "dc8.o": "Інститут гештальту Погодіна · 2021-2022",
+  "k.kick": "Як це відбувається",
+  "k.h": "Чотири кроки до першої зустрічі",
+  "k1.h": "Заявка",
+  "k1.p": "WhatsApp, Telegram або форма. Відповідаю особисто протягом години.",
+  "k2.h": "Перша зустріч",
+  "k2.p": "50 хвилин: ваш запит і мої запитання. Вирішуємо, чи підходимо одне одному.",
+  "k3.h": "Контракт",
+  "k3.p": "Формат, частота, конфіденційність - фіксуємо домовленості.",
+  "k4.h": "Робота",
+  "k4.p": "Раз на тиждень, онлайн або в Кракові. Короткостроково або в тривалому форматі.",
+  "f.kick": "Питання",
+  "f.h": "Що запитують перед першою зустріччю",
+  "f1.q": "Онлайн - це працює?",
+  "f1.a": "Так. Відеодзвінок у зручному месенджері, 50 хвилин, з будь-якої точки світу. Потрібні тихе місце й навушники.",
+  "f2.q": "Це конфіденційно?",
+  "f2.a": "Так. Зміст сесій не передається третім особам, я дотримуюся етичного кодексу гештальт-терапевта. Докладніше - у політиці конфіденційності.",
+  "f3.q": "Скільки потрібно зустрічей?",
+  "f3.a": "Короткостроковий формат - до 10 зустрічей з конкретним запитом. Тривала терапія - у вашому ритмі, зазвичай раз на тиждень.",
+  "f4.q": "Якою мовою проходять сесії?",
+  "f4.a": "Російською або українською - як вам зручніше.",
+  "f5.q": "Чи можна прийти вдвох?",
+  "f5.a": "Так. Парна сесія - 1 година 20 хвилин, 90 €. Партнери, подружжя, один із батьків і дитина.",
+  "f6.q": "Що робити, якщо допомога потрібна терміново?",
+  "f6.a": "Психотерапія - не екстрена служба. Якщо є загроза життю, зверніться до служби екстреної допомоги вашої країни (у Польщі - 112).",
+  "y.kick": "Запис",
+  "y.h": "Залиште заявку",
+  "y.lead": "Відповім особисто протягом години у WhatsApp. Можна без подробиць - двох слів про запит достатньо.",
+  "y.f1": "Перша зустріч - 50 хвилин, 50 €",
+  "y.f2": "Пн-пт 9:00-20:00, вихідні за домовленістю",
+  "y.f3": "Зручніше месенджер - WhatsApp або Telegram",
+  "y.name": "Ім'я",
+  "y.namep": "Як до вас звертатися",
+  "y.phone": "Телефон (WhatsApp)",
+  "y.fmt": "Формат",
+  "y.fmt1": "Онлайн",
+  "y.fmt2": "Очно в Кракові",
+  "y.svc": "Тема",
+  "y.s1": "Індивідуальна сесія",
+  "y.s2": "Короткострокове консультування",
+  "y.s3": "Тривала психотерапія",
+  "y.s4": "Підліток",
+  "y.s5": "Пара або сім'я",
+  "y.s6": "Супервізія",
+  "y.msg": "Про ситуацію (необов'язково)",
+  "y.msgp": "Кілька слів про те, що відбувається",
+  "y.b": "Надіслати у WhatsApp",
+  "y.ok": "Дякую! Відкриваю WhatsApp з вашою заявкою.",
+  "y.err": "Вкажіть ім'я та номер телефону.",
+  "y.note": "Натискаючи кнопку, ви погоджуєтеся з <a href=\"privacy.html\">політикою конфіденційності</a>. Дані потрібні лише для запису.",
+  "kt.kick": "Контакти",
+  "kt.h": "Напишіть або зателефонуйте",
+  "kt.l1": "Краків, центр міста. Адреса кабінету - після запису.",
+  "kt.l2": "Онлайн - по всьому світу. Російська та українська.",
+  "kt.l3": "Пн-пт 9:00-20:00, вихідні - за домовленістю.",
+  "alt.krakow": "Ірина Сиром'ятнікова на балконі в центрі Кракова",
+  "kt.cap": "Очно в центрі Кракова",
+  "ft.priv": "Політика конфіденційності",
+  "ft.disc": "Психотерапія не замінює екстреної допомоги та медичного лікування. Зміст сесій конфіденційний.",
+  "ft.copy": "Ірина Сиром'ятнікова. Гештальт-терапевт, Краків і онлайн."
+};
 var EN = {
   "t.title": "Gestalt therapist Iryna Syromiatnykova - psychotherapy online and in Kraków",
-  "t.desc": "Gestalt therapist Iryna Syromiatnykova: individual therapy, short-term counselling, teenagers, couples, supervision. In person in central Kraków and online worldwide. 1500+ sessions since 2021. 50-minute session - $50. Russian and Ukrainian.",
+  "t.desc": "Gestalt therapist Iryna Syromiatnykova: individual therapy, short-term counselling, teenagers, couples, supervision. In person in central Kraków and online worldwide. 2000+ sessions. 50-minute session - €50. Russian and Ukrainian.",
   "t.ogt": "Gestalt therapist Iryna Syromiatnykova - online and in Kraków",
-  "t.ogd": "Individual therapy, couples, teenagers, supervision. 1500+ sessions since 2021. 50-minute session - $50. In Kraków and online.",
+  "t.ogd": "Individual therapy, couples, teenagers, supervision. 2000+ sessions. 50-minute session - €50. In Kraków and online.",
   "a.home": "Iryna Syromiatnykova, Gestalt therapist - home", "a.nav": "Sections", "a.call": "Call +380 97 528 05 00", "a.lang": "Site language",
   "a.menu": "Menu", "a.hero": "Main screen", "a.bar": "Quick contact", "a.call2": "Call",
   "lg1": "Iryna Syromiatnykova", "lg2": "Gestalt therapist",
   "n1": "Services", "n2": "Requests", "n3": "Prices", "n4": "About", "n5": "FAQ", "n6": "Contacts",
   "m1": "Short-term counselling", "m2": "Long-term psychotherapy", "m3": "Therapy for teenagers", "m4": "Couples and family counselling",
   "m5": "Supervision", "m6": "What people come with", "m7": "Prices", "m8": "About me", "m9": "FAQ", "m10": "Contacts",
-  "h.kick": "Kraków · online worldwide · in practice since 2021",
+  "h.kick": "Kraków · online worldwide",
   "h.big": "Gestalt therapist", "h.name": "Iryna Syromiatnykova",
-  "h.lead": "Individual therapy, couples, teenagers, supervision. 1500+ sessions. In person in central Kraków and online. 50-minute session - $50.",
+  "h.lead": "Individual therapy, couples, teenagers, supervision. 2000+ sessions. In person in central Kraków and online. 50-minute session - €50.",
   "h.b1": "Book via WhatsApp", "h.b2": "Services and prices", "h.ig": "Thoughts and practice on Instagram",
   "alt.hero": "A boat on calm water at sunset near the shore",
   "b.wa": "Book via WhatsApp", "b.tg": "Message on Telegram", "b.tg2": "Telegram", "b.write": "Write", "b.wa2": "Message on WhatsApp", "b.book": "Book a session", "b.pack": "Get a package",
   "s1.kick": "Short-term counselling", "s1.h": "Up to 10 meetings around one request",
   "s1.lead": "Anxiety, a crisis, a hard decision, relationships, boundaries. A clear goal and a clear timeframe.",
-  "s1.fig": "meetings · $50 per 50 minutes",
+  "s1.fig": "meetings · €50 per 50 minutes",
   "s1.c1": "online or in Kraków", "s1.c2": "10-session package -10%", "s1.c3": "Russian and Ukrainian",
-  "alt.s1": "A sailboat on still water in a pastel sunset",
+  "alt.s1": "Iryna Syromiatnykova on a sofa in a bright interior",
   "s2.kick": "Long-term psychotherapy", "s2.h": "Deeper than the symptom: therapy at your own pace",
   "s2.lead": "Repeating patterns, guilt and shame, consequences of trauma, emotional swings. Once a week, under a contract.",
   "s2.fig": "50-minute session",
   "s2.c1": "individual", "s2.c2": "Gestalt approach", "s2.c3": "online or in Kraków",
-  "alt.s2": "A wooden boat on deep water, seen from above",
+  "alt.s2": "Iryna Syromiatnykova with a book by the wall",
   "s3.kick": "Therapy for teenagers", "s3.h": "A safe space of their own for a teenager",
-  "s3.lead": "Anxiety, self-esteem, conflicts at home and at school, moving to another country. Parents - in a separate meeting, by agreement.",
-  "s3.fig": "session · $50",
+  "s3.lead": "Anxiety, self-esteem, conflicts at home and at school, moving to another country. A meeting with parents - by agreement.",
+  "s3.fig": "session · €50",
   "s3.c1": "from age 12", "s3.c2": "no judgement, no pressure", "s3.c3": "online or in Kraków",
-  "alt.s3": "A blue canoe by a grassy lake shore",
+  "alt.s3": "Iryna Syromiatnykova in a white shirt by an old fountain",
   "s4.kick": "Couples and family counselling", "s4.h": "Two people in one conversation",
   "s4.lead": "Partners, spouses, mother and daughter - any two people who find it hard to hear each other.",
   "s4.fig": "session of 1 hour 20 minutes",
-  "s4.c1": "couples and families", "s4.c2": "5-session package -5%", "s4.c3": "online or in Kraków",
-  "alt.s4": "Two boats side by side at a wooden pier",
+  "s4.c1": "couples and families", "s4.c2": "10-session package -10%", "s4.c3": "online or in Kraków",
+  "alt.s4": "Iryna Syromiatnykova in a vaulted café",
   "z.kick": "Requests", "z.h": "What people come to me with",
   "z.lead": "Anxiety out of nowhere, tiredness after a holiday, snapping at loved ones - this is not «just pull yourself together». It can be worked through.",
   "z1.h": "Anxiety and panic attacks", "z1.p": "Tension without a reason, overthinking before sleep, fear that something will happen.", "z1.q": "how to stop overthinking before sleep",
-  "z2.h": "Depressive states", "z2.p": "Nothing brings joy, no energy, tiredness that stays even after rest.", "z2.q": "what to do when nothing brings joy",
-  "z3.h": "Consequences of trauma", "z3.p": "A past that keeps running the present.", "z3.q": "how to stop being afraid",
+  "z2.h": "Depressive states", "z2.p": "Nothing brings joy, no energy, loneliness, tiredness that stays even after rest.", "z2.q": "what to do when nothing brings joy",
+  "z3.h": "Consequences of trauma", "z3.p": "A past that keeps running the present. A difficult childhood experience.", "z3.q": "how to stop being afraid",
   "z4.h": "Crises and divorce", "z4.p": "Break-up, relocation, loss - when the usual support is gone.", "z4.q": "how to go on after a divorce",
-  "z5.h": "Relationships and sexuality", "z5.p": "Closeness, trust, desire, the same arguments again and again.", "z5.q": "how to fix my relationship with my partner",
-  "z6.h": "LGBT and orientation", "z6.p": "Self-acceptance, coming out, relationships and family - without judgement.", "z6.q": "how to accept myself",
+  "z5.h": "Relationships and sexuality", "z13.q": "why do we keep arguing", "z13.h": "Relationship difficulties", "z13.p": "Frequent arguments, misunderstanding, jealousy, loss of closeness, trust issues, resentment, different views on life, difficulty expressing feelings and needs, relationship crises and break-ups.", "z5.p": "Closeness, trust, desire, the same arguments again and again. Isolation and being unable to talk.", "z5.q": "how to fix my relationship with my partner",
+  "z6.h": "LGBT and orientation", "z6.p": "Self-acceptance, coming out, family conflicts and personal boundaries - without judgement.", "z6.q": "how to accept myself",
   "z7.h": "Self-esteem and boundaries", "z7.p": "Dependence on others' opinions, comparing yourself to others, not being able to say «no».", "z7.q": "how to stop depending on what others think",
   "z8.h": "Repeating patterns", "z8.p": "The same people, conflicts and dead ends - in different settings.", "z8.q": "why do I keep choosing the wrong people",
   "z9.h": "Guilt, shame, irritability", "z9.p": "I snap at loved ones, then blame myself. Round and round.", "z9.q": "how to stop snapping at loved ones",
   "z10.h": "Burnout and procrastination", "z10.p": "I put off even the things I want. I can't make myself start.", "z10.q": "how to tell laziness from burnout",
-  "z11.h": "Support for parents", "z11.p": "Parent-child relationships, adolescence, your own exhaustion.", "z11.q": "how to stop shouting at my child",
+  "z11.h": "Support for parents", "z11.p": "Parent-child relationships, adolescence, parenting children with special needs, your own exhaustion.", "z11.q": "how to stop shouting at my child",
   "z12.h": "Your own topic", "z12.p": "If you don't see yourself on the list - describe it in two words. We'll sort it out at the first meeting.",
   "u.kick": "If you recognise yourself", "u.h": "Phrases people come with",
   "u1": "«I overthink before sleep»", "u2": "«I feel anxious for no reason»", "u3": "«I put off even what I want»", "u4": "«I'm tired even after rest»",
@@ -163,16 +440,16 @@ var EN = {
   "p.lead": "Case review, «difficult» clients, therapeutic stance and boundaries - in the Gestalt approach. Individually, online or in Kraków.",
   "p.fig": "hours of supervisor training, Pogodin Gestalt Institute",
   "p.c1": "Gestalt approach", "p.c2": "Russian and Ukrainian", "p.c3": "terms on request",
-  "p.b": "Book supervision", "alt.sup": "A pier stretching into a calm lake",
+  "p.b": "Book supervision", "alt.sup": "Iryna Syromiatnykova working on a laptop",
   "c.kick": "Prices", "c.h": "Clear terms",
   "c.lead": "One price for therapy and counselling, online and in person. We work under a contract: format and frequency are agreed at the first session.",
   "c1.k": "Individual session", "c1.d": "50 minutes. Therapy or counselling, online or in Kraków.",
-  "c2.k": "Session packages", "c2.s": "-5% / -10%", "c2.d": "5 sessions - 5% off, 10 sessions - 10% off. For individual and couples work.",
+  "c2.k": "Session packages", "c2.s": "-5% / -10%", "c2.d": "Individual: 5 sessions - 5% off, 10 sessions - 10% off. Couples: 10 sessions - 10% off.",
   "c3.k": "Couples session", "c3.d": "1 hour 20 minutes. Partners, spouses, family - any two people.",
   "c.fee": "Supervision for colleagues - terms on request. I answer personally within an hour.",
   "ab.stub": "Portrait of Iryna", "ab.stub2": "photo coming soon", "alt.portrait": "Iryna Syromiatnykova, Gestalt therapist",
   "ab.kick": "About me", "ab.h": "Iryna Syromiatnykova",
-  "ab.lead": "Gestalt therapist. In practice since 2021, trained with leading Ukrainian and European Gestalt therapists. I work in Russian and Ukrainian with adults, teenagers and couples.",
+  "ab.lead": "Gestalt therapist. Trained with leading Ukrainian and European Gestalt therapists. I work in Russian and Ukrainian with adults, teenagers and couples.",
   "ab.st1": "sessions", "ab.st2": "practice began", "ab.st3": "years with my longest client",
   "ab.f1": "Gentle and non-judgemental: a safe space for what is hard", "ab.f2": "I don't give advice - I help you find your own solutions and footing",
   "ab.f3": "I work with difficult emotional states and crises",
@@ -196,10 +473,10 @@ var EN = {
   "f2.q": "Is it confidential?", "f2.a": "Yes. The content of sessions is not shared with third parties; I follow the ethical code of a Gestalt therapist. See the privacy policy for details.",
   "f3.q": "How many meetings do I need?", "f3.a": "The short-term format - up to 10 meetings around a specific request. Long-term therapy - at your pace, usually once a week.",
   "f4.q": "What language are sessions in?", "f4.a": "Russian or Ukrainian - whichever is more comfortable for you.",
-  "f5.q": "Can we come as a couple?", "f5.a": "Yes. A couples session is 1 hour 20 minutes, $80. Partners, spouses, parent and child.",
+  "f5.q": "Can we come as a couple?", "f5.a": "Yes. A couples session is 1 hour 20 minutes, €90. Partners, spouses, parent and child.",
   "f6.q": "What if I need help urgently?", "f6.a": "Psychotherapy is not an emergency service. If there is a threat to life, contact the emergency service of your country (in Poland - 112).",
   "y.kick": "Booking", "y.h": "Leave a request", "y.lead": "I answer personally within an hour on WhatsApp. No details needed - two words about your request are enough.",
-  "y.f1": "First meeting - 50 minutes, $50", "y.f2": "Mon-Fri 9:00-20:00, weekends by agreement", "y.f3": "Prefer a messenger - WhatsApp or Telegram",
+  "y.f1": "First meeting - 50 minutes, €50", "y.f2": "Mon-Fri 9:00-20:00, weekends by agreement", "y.f3": "Prefer a messenger - WhatsApp or Telegram",
   "y.name": "Name", "y.namep": "How should I address you", "y.phone": "Phone (WhatsApp)", "y.fmt": "Format", "y.fmt1": "Online", "y.fmt2": "In person in Kraków",
   "y.svc": "Topic", "y.s1": "Individual session", "y.s2": "Short-term counselling", "y.s3": "Long-term psychotherapy", "y.s4": "Teenager", "y.s5": "Couple or family", "y.s6": "Supervision",
   "y.msg": "About the situation (optional)", "y.msgp": "A few words about what is going on", "y.b": "Send via WhatsApp",
@@ -220,25 +497,27 @@ var EN = {
   document.querySelectorAll("[data-i-ph]").forEach(function(el){ if (RU[el.dataset.iPh] === undefined) RU[el.dataset.iPh] = el.getAttribute("placeholder"); });
   var t = document.querySelector("title[data-i-t]"); if (t) RU[t.dataset.iT] = t.textContent;
 })();
-function curLang(){ return root.lang === "en" ? "en" : "ru"; }
-function pick(key, en){ var v = en ? EN[key] : RU[key]; return v === undefined ? RU[key] : v; }
+var LANGS = ["ru", "uk", "en"];
+function normLang(l){ return LANGS.indexOf(l) > -1 ? l : "ru"; }
+function curLang(){ return normLang(root.lang); }
+function pick(key, lang){ var d = lang === "en" ? EN : (lang === "uk" ? UK : RU); var v = d[key]; return v === undefined ? RU[key] : v; }
 function applyLang(lang){
-  var en = lang === "en";
-  root.setAttribute("lang", en ? "en" : "ru");
-  document.querySelectorAll("[data-i]").forEach(function(el){ var v = pick(el.dataset.i, en); if (v !== undefined) el.innerHTML = v; });
-  document.querySelectorAll("[data-i-alt]").forEach(function(el){ var v = pick(el.dataset.iAlt, en); if (v !== undefined) el.alt = v; });
-  document.querySelectorAll("[data-i-aria]").forEach(function(el){ var v = pick(el.dataset.iAria, en); if (v !== undefined) el.setAttribute("aria-label", v); });
-  document.querySelectorAll("[data-i-c]").forEach(function(el){ var v = pick(el.dataset.iC, en); if (v !== undefined) el.setAttribute("content", v); });
-  document.querySelectorAll("[data-i-ph]").forEach(function(el){ var v = pick(el.dataset.iPh, en); if (v !== undefined) el.setAttribute("placeholder", v); });
+  lang = normLang(lang);
+  root.setAttribute("lang", lang);
+  document.querySelectorAll("[data-i]").forEach(function(el){ var v = pick(el.dataset.i, lang); if (v !== undefined) el.innerHTML = v; });
+  document.querySelectorAll("[data-i-alt]").forEach(function(el){ var v = pick(el.dataset.iAlt, lang); if (v !== undefined) el.alt = v; });
+  document.querySelectorAll("[data-i-aria]").forEach(function(el){ var v = pick(el.dataset.iAria, lang); if (v !== undefined) el.setAttribute("aria-label", v); });
+  document.querySelectorAll("[data-i-c]").forEach(function(el){ var v = pick(el.dataset.iC, lang); if (v !== undefined) el.setAttribute("content", v); });
+  document.querySelectorAll("[data-i-ph]").forEach(function(el){ var v = pick(el.dataset.iPh, lang); if (v !== undefined) el.setAttribute("placeholder", v); });
   var t = document.querySelector("title[data-i-t]");
-  if (t) { var tv = pick(t.dataset.iT, en); if (tv !== undefined) t.textContent = tv; }
+  if (t) { var tv = pick(t.dataset.iT, lang); if (tv !== undefined) t.textContent = tv; }
   document.querySelectorAll(".lang button").forEach(function(b){
-    var on = b.getAttribute("data-lang") === (en ? "en" : "ru");
+    var on = b.getAttribute("data-lang") === lang;
     b.classList.toggle("is-active", on);
     b.setAttribute("aria-pressed", on ? "true" : "false");
   });
-  try { localStorage.setItem("is-lang", en ? "en" : "ru"); } catch(e){}
-  setWa(en ? "en" : "ru");
+  try { localStorage.setItem("is-lang", lang); } catch(e){}
+  setWa(lang);
   fitText();
   update();
 }
@@ -402,10 +681,8 @@ if (form) form.addEventListener("submit", function(e){
   var svc = form.svc.value, fmt = form.fmt.value, msg = (form.msg.value || "").trim();
   if (!name || phone.replace(/\D/g, "").length < 9) { err.hidden = false; ok.hidden = true; return; }
   err.hidden = true;
-  var en = curLang() === "en";
-  var t = (en ? HI.en : HI.ru) + (en
-    ? " Request.\nName: " + name + "\nPhone: " + phone + "\nTopic: " + svc + "\nFormat: " + fmt + (msg ? "\nAbout the situation: " + msg : "")
-    : " Заявка.\nИмя: " + name + "\nТелефон: " + phone + "\nТема: " + svc + "\nФормат: " + fmt + (msg ? "\nО ситуации: " + msg : ""));
+  var L = curLang(), F = FORM_TXT[L];
+  var t = HI[L] + " " + F[0] + "\n" + F[1] + ": " + name + "\n" + F[2] + ": " + phone + "\n" + F[3] + ": " + svc + "\n" + F[4] + ": " + fmt + (msg ? "\n" + F[5] + ": " + msg : "");
   ok.hidden = false;
   conv("lead");
   window.open(waUrl(t), "_blank", "noopener");
@@ -417,8 +694,8 @@ if (form) form.addEventListener("submit", function(e){
   var url = new URLSearchParams(location.search).get("lang");
   var saved = null;
   try { saved = localStorage.getItem("is-lang"); } catch(e){}
-  var lang = (url === "en" || url === "ru") ? url : (saved === "en" ? "en" : "ru");
-  if (lang === "en") applyLang("en"); else setWa("ru");
+  var lang = LANGS.indexOf(url) > -1 ? url : normLang(saved);
+  if (lang !== "ru") applyLang(lang); else setWa("ru");
 })();
 document.querySelectorAll(".lang button").forEach(function(b){
   b.addEventListener("click", function(){ applyLang(b.getAttribute("data-lang")); });
