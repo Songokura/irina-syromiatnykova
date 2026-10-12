@@ -604,18 +604,16 @@ function update(){
   var H = innerHeight || root.clientHeight;
   hdrState();
   if (root.classList.contains("no-plate")) return;
+  /* 12.10.2026: раскрытие одноразовое по входу в экран, а не по ходу прокрутки -
+     иначе на остановке скролла фото висит полосатым, как битая картинка */
   pws.forEach(function(pw){
+    if (!isNaN(dbgOpen)) { setVar(pw, "--open", dbgOpen); return; }
+    if (pw.classList.contains("on")) return;
     var r = pw.getBoundingClientRect();
-    var enter = clamp(1 - r.top / H);
-    var next = pw.nextElementSibling;
-    var exit = next ? clamp(1 - next.getBoundingClientRect().top / H) : 0;
-    var open = !isNaN(dbgOpen) ? dbgOpen : smooth(clamp((enter - .12) / .78));
-    setVar(pw, "--enter", enter);
-    setVar(pw, "--exit", exit);
-    setVar(pw, "--open", open);
-    pw.classList.toggle("gone", exit >= 1);
-    pw.classList.toggle("on", enter > 0.6);
-    pw.classList.toggle("open", open >= .999);
+    if (r.top < H * 0.78 && r.bottom > 0) {
+      pw.classList.add("on");
+      setTimeout(function(){ pw.classList.add("open"); }, 1400);
+    }
   });
 }
 if (RED) {
