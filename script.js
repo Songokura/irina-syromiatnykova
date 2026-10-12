@@ -195,7 +195,7 @@ var UK = {
   "s2.c1": "індивідуально",
   "s2.c2": "гештальт-підхід",
   "s2.c3": "онлайн або в Кракові",
-  "alt.s2": "Ірина Сиром'ятнікова з книгою біля стіни",
+  "alt.s2": "Книжкові полиці в сонячному світлі з вікна",
   "s3.kick": "Психотерапія підлітків",
   "s3.h": "Підлітку - власний безпечний простір",
   "s3.lead": "Тривога, самооцінка, конфлікти вдома і в школі, переїзд до іншої країни. Зустріч із батьками - за домовленістю.",
@@ -211,7 +211,7 @@ var UK = {
   "s4.c1": "пари та сім'ї",
   "s4.c2": "пакет 10 сесій -10 %",
   "s4.c3": "онлайн або в Кракові",
-  "alt.s4": "Ірина Сиром'ятнікова в кав'ярні під склепіннями",
+  "alt.s4": "Дві чашки гарячого чаю на столі",
   "z.kick": "Запити",
   "z.h": "З чим до мене приходять",
   "z.lead": "Тривога на рівному місці, втома після відпочинку, зриви на близьких - це не «треба взяти себе в руки». З цим можна розібратися.",
@@ -406,7 +406,7 @@ var EN = {
   "s2.lead": "Repeating patterns, guilt and shame, consequences of trauma, emotional swings. Once a week, under a contract.",
   "s2.fig": "50-minute session",
   "s2.c1": "individual", "s2.c2": "Gestalt approach", "s2.c3": "online or in Kraków",
-  "alt.s2": "Iryna Syromiatnykova with a book by the wall",
+  "alt.s2": "Bookshelves in sunlight from a window",
   "s3.kick": "Therapy for teenagers", "s3.h": "A safe space of their own for a teenager",
   "s3.lead": "Anxiety, self-esteem, conflicts at home and at school, moving to another country. A meeting with parents - by agreement.",
   "s3.fig": "session · €50",
@@ -416,7 +416,7 @@ var EN = {
   "s4.lead": "Partners, spouses, mother and daughter - any two people who find it hard to hear each other.",
   "s4.fig": "session of 1 hour 20 minutes",
   "s4.c1": "couples and families", "s4.c2": "10-session package -10%", "s4.c3": "online or in Kraków",
-  "alt.s4": "Iryna Syromiatnykova in a vaulted café",
+  "alt.s4": "Two cups of hot tea on a table",
   "z.kick": "Requests", "z.h": "What people come to me with",
   "z.lead": "Anxiety out of nowhere, tiredness after a holiday, snapping at loved ones - this is not «just pull yourself together». It can be worked through.",
   "z1.h": "Anxiety and panic attacks", "z1.p": "Tension without a reason, overthinking before sleep, fear that something will happen.", "z1.q": "how to stop overthinking before sleep",
@@ -635,6 +635,8 @@ window.plateSync = update;
 /* плита выше экрана (низкий телефон, крупный шрифт) - стек выключаем, плиты идут потоком */
 function stackCheck(){
   if (RED) return;
+  /* на десктопе плиты - обычные секции по высоте содержимого, проверка не нужна */
+  if ((innerWidth || root.clientWidth) > 760) { root.classList.remove("no-stack"); return; }
   var H = innerHeight || root.clientHeight, over = false;
   root.classList.remove("no-stack");
   document.querySelectorAll(".plate").forEach(function(p){ if (p.scrollHeight > H + 2) over = true; });
