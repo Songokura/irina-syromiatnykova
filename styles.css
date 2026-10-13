@@ -504,3 +504,49 @@ html.no-stack .plate{height:auto;min-height:100svh}
 html.no-stack .ph{height:40svh}
 html.no-plate .pw .ph,html.no-plate .rv-ph{-webkit-mask-image:none;mask-image:none}
 html.no-plate .plate .txt > *,html.no-plate .pw-photo .wrap > *,html.no-plate .says li,html.no-plate .rv{opacity:1;transform:none}
+
+/* ---------- СИММЕТРИЯ (13.10.2026): всё по центру, как герой; двухколоночные блоки в одной сетке с плитами ---------- */
+.sh,.docs-wrap > .kick,.docs-h,.fee{text-align:center}
+.sh .kick,.docs-wrap > .kick{justify-content:center}
+.sh{display:grid;justify-items:center}
+/* плиты услуг: текст по центру своей колонки */
+.plate .txt{align-items:center;text-align:center}
+.fig,.chips,.cta{justify-content:center}
+/* цитаты на фото: по центру, затемнение ровное с обеих сторон */
+.pw-photo .wrap{display:grid;justify-items:center;text-align:center}
+.pw-photo .says,.pw-photo .say-p{margin-inline:auto}
+.pw-photo .ph::after{background:radial-gradient(70% 80% at 50% 50%,rgba(24,22,20,.72) 0%,rgba(24,22,20,.5) 60%,rgba(24,22,20,.3) 100%)}
+/* «Обо мне», «Заявка», «Контакты»: текст по центру, списки - центрированным блоком с выравниванием строк влево */
+.about-txt,.zay-txt,.kont-txt{display:grid;justify-items:center;text-align:center}
+.about-txt .kick,.zay-txt .kick,.kont-txt .kick{justify-content:center}
+.stats,.about-cta,.soc,.kphones{justify-content:center}
+.kphones{align-items:center}
+.facts,.klist{width:fit-content;max-width:100%;text-align:left}
+/* подвал по центру */
+.ftr-top{justify-content:center;text-align:center}
+.ftr .wrap{text-align:center}
+@media(min-width:1021px){
+  /* та же сетка, что у плит: фото 496 + зазор 115 + текст 629 на 1240 */
+  .about{grid-template-columns:minmax(0,496px) minmax(0,1fr);column-gap:clamp(40px,8vw,115px)}
+  .about .stub-portrait{width:100%}
+  .kont{grid-template-columns:minmax(0,1fr) minmax(0,496px);column-gap:clamp(40px,8vw,115px)}
+  .zay{grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:clamp(40px,8vw,115px);align-items:center}
+}
+@media(max-width:1020px){
+  .about .stub-portrait,.kph{margin-inline:auto}
+}
+/* карточки запросов и цен - содержимое по центру; «Написать» по центру низа */
+.card{align-items:center;text-align:center}
+.clink{left:50%;transform:translateX(-50%)}
+.card-cta .btn{align-self:center}
+.price{align-items:center;text-align:center}
+.pack{flex-direction:column;align-items:center;justify-content:center;gap:10px}
+.pack > div:last-child{align-items:center}
+/* шаги: номер над заголовком, всё по центру */
+.step{flex-direction:column;align-items:center;text-align:center;gap:10px}
+/* подвал: логотип над меню, всё по центру */
+.ftr-top{flex-direction:column;gap:16px}
+.fl{margin-left:0;justify-content:center}
+.ftr .logo{align-items:center}
+.ftr .disc,.ftr .legal,.ftr .copy{margin-inline:auto}
+@media(min-width:761px){.card-cta{display:flex;flex-direction:column;align-items:center;row-gap:10px}.card-cta .btn{margin-top:8px}}
