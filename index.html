@@ -30,10 +30,9 @@
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="image" href="assets/hero-boat.webp" media="(min-width:761px)">
-<link rel="preload" as="image" href="assets/hero-boat-m.webp" media="(max-width:760px)">
+<link rel="preload" as="image" href="assets/hero-irina.webp">
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20261012-4">
+<link rel="stylesheet" href="styles.css?v=20261013-1">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -127,10 +126,9 @@
 
 <!-- ================= ГЕРОЙ: статичный, чёткое фото в полном цвете ================= -->
 <section class="hero" id="top" aria-label="Главный экран" data-i-aria="a.hero">
-  <picture class="hero-bg">
-    <source media="(max-width:760px)" srcset="assets/hero-boat-m.webp">
-    <img src="assets/hero-boat.webp" alt="Лодка на спокойной воде на закате у берега" data-i-alt="alt.hero" fetchpriority="high" decoding="async" width="2560" height="1706">
-  </picture>
+  <figure class="hero-bg">
+    <img src="assets/hero-irina.webp" alt="Ирина Сыромятникова в белой футболке за столиком кафе в Кракове" data-i-alt="alt.hero" fetchpriority="high" decoding="async" width="852" height="1280">
+  </figure>
   <div class="hero-txt">
     <div class="wrap">
       <p class="kick" data-i="h.kick">Краков · онлайн по всему миру</p>
@@ -182,7 +180,7 @@
 
 <div class="pw" id="podrostki">
   <section class="plate" aria-labelledby="h-s3">
-    <figure class="ph" style="--pp:50% 38%"><img src="assets/podrostki-ir.webp" alt="Ирина Сыромятникова в белой рубашке у старинного фонтана" data-i-alt="alt.s3" loading="lazy" decoding="async" width="1200" height="1800"></figure>
+    <figure class="ph" style="--pp:50% 62%"><img src="assets/podrostki-ir2.webp" alt="Ирина Сыромятникова в джинсовом костюме сидит на полу у пледа" data-i-alt="alt.s3" loading="lazy" decoding="async" width="1200" height="1800"></figure>
     <div class="txt">
       <p class="kick" data-i="s3.kick">Психотерапия подростков</p>
       <h2 class="h2" id="h-s3" data-i="s3.h">Подростку - своё безопасное пространство</h2>
@@ -199,7 +197,7 @@
 
 <div class="pw flip" id="pary">
   <section class="plate" aria-labelledby="h-s4">
-    <figure class="ph" style="--pp:50% 50%"><img src="assets/pary-st.webp" alt="Две чашки горячего чая на столе" data-i-alt="alt.s4" loading="lazy" decoding="async" width="1100" height="1375"></figure>
+    <figure class="ph" style="--pp:50% 40%"><img src="assets/pary-ir.webp" alt="Ирина Сыромятникова внимательно слушает" data-i-alt="alt.s4" loading="lazy" decoding="async" width="1200" height="1800"></figure>
     <div class="txt">
       <p class="kick" data-i="s4.kick">Парное и семейное консультирование</p>
       <h2 class="h2" id="h-s4" data-i="s4.h">Двое в одном разговоре</h2>
@@ -214,8 +212,26 @@
   </section>
 </div>
 
+<!-- ================= СУПЕРВИЗИЯ: плита ================= -->
+<div class="pw" id="superviziya">
+  <section class="plate" aria-labelledby="h-sup">
+    <figure class="ph" style="--pp:50% 34%"><img src="assets/superviziya-ir2.webp" alt="Ирина Сыромятникова с кофе на улице Кракова" data-i-alt="alt.sup" loading="lazy" decoding="async" width="1200" height="1800"></figure>
+    <div class="txt">
+      <p class="kick" data-i="p.kick">Для коллег</p>
+      <h2 class="h2" id="h-sup" data-i="p.h">Супервизия психологов и психотерапевтов</h2>
+      <p class="lead" data-i="p.lead">Разбор клиентских случаев, профессиональных трудностей и процессов, возникающих в работе терапевта. Пространство для исследования контакта с клиентом, поиска новых перспектив и развития профессиональной опоры.</p>
+      <p class="fig"><b>432</b><span data-i="p.fig">часа подготовки супервизора, Институт гештальта Погодина</span></p>
+      <ul class="chips"><li data-i="p.c1">гештальт-подход</li><li data-i="p.c2">русский и украинский</li><li data-i="p.c3">условия при записи</li></ul>
+      <div class="cta">
+        <a class="btn btn-main" data-wa="superviziya" href="https://wa.me/380975280500"><svg width="18" height="18"><use href="#ic-wa"/></svg><span data-i="p.b">Записаться на супервизию</span></a>
+        <a class="btn btn-ghost" href="https://t.me/Irina_Syrom" target="_blank" rel="noopener"><svg width="18" height="18"><use href="#ic-tg"/></svg><span data-i="b.tg2">Telegram</span></a>
+      </div>
+    </div>
+  </section>
+</div>
+
 <!-- ================= ЗАПРОСЫ ================= -->
-<section class="sec sec-2" id="zaprosy">
+<section class="sec sec-1" id="zaprosy">
   <div class="wrap">
     <div class="sh rv">
       <p class="kick" data-i="z.kick">Запросы</p>
@@ -229,7 +245,7 @@
       <li class="card" id="krizisy"><q data-i="z4.q">как жить дальше после развода</q><h3 data-i="z4.h">Кризисы и разводы</h3><p data-i="z4.p">Расставание, переезд, потеря - когда привычная опора ушла.</p><a class="clink" data-wa="krizisy" href="https://wa.me/380975280500"><span data-i="b.write">Написать</span><svg width="14" height="14"><use href="#ic-ar"/></svg></a></li>
       <li class="card" id="trudnosti-v-otnosheniyah"><q data-i="z13.q">почему мы всё время ссоримся</q><h3 data-i="z13.h">Трудности в отношениях</h3><p data-i="z13.p">Частые ссоры, непонимание, ревность, потеря близости, сложности с доверием, обиды, разные взгляды на жизнь, трудности в выражении чувств и желаний, кризисы в отношениях и расставание.</p><a class="clink" data-wa="trudnosti" href="https://wa.me/380975280500"><span data-i="b.write">Написать</span><svg width="14" height="14"><use href="#ic-ar"/></svg></a></li>
       <li class="card" id="otnosheniya"><q data-i="z5.q">как наладить отношения с партнёром</q><h3 data-i="z5.h">Отношения и сексуальность</h3><p data-i="z5.p">Близость, доверие, желание, одни и те же ссоры. Изоляция и невозможность поговорить.</p><a class="clink" data-wa="otnosheniya" href="https://wa.me/380975280500"><span data-i="b.write">Написать</span><svg width="14" height="14"><use href="#ic-ar"/></svg></a></li>
-      <li class="card" id="lgbt"><q data-i="z6.q">как принять себя</q><h3 data-i="z6.h">ЛГБТ и ориентация</h3><p data-i="z6.p">Принятие себя, каминг-аут, семейные конфликты и личные границы - без осуждения.</p><a class="clink" data-wa="lgbt" href="https://wa.me/380975280500"><span data-i="b.write">Написать</span><svg width="14" height="14"><use href="#ic-ar"/></svg></a></li>
+      <li class="card" id="lgbt"><q data-i="z6.q">как принять себя</q><h3 data-i="z6.h">ЛГБТ и ориентация</h3><p data-i="z6.p">Принятие себя, каминг-аут, семейные конфликты, личные границы.</p><a class="clink" data-wa="lgbt" href="https://wa.me/380975280500"><span data-i="b.write">Написать</span><svg width="14" height="14"><use href="#ic-ar"/></svg></a></li>
       <li class="card" id="samoocenka"><q data-i="z7.q">как перестать зависеть от чужого мнения</q><h3 data-i="z7.h">Самооценка и границы</h3><p data-i="z7.p">Зависимость от чужого мнения, сравнение с другими, неумение сказать «нет».</p><a class="clink" data-wa="samoocenka" href="https://wa.me/380975280500"><span data-i="b.write">Написать</span><svg width="14" height="14"><use href="#ic-ar"/></svg></a></li>
       <li class="card" id="scenarii"><q data-i="z8.q">почему я снова выбираю не тех</q><h3 data-i="z8.h">Повторяющиеся сценарии</h3><p data-i="z8.p">Одни и те же люди, конфликты и тупики - в разных декорациях.</p><a class="clink" data-wa="scenarii" href="https://wa.me/380975280500"><span data-i="b.write">Написать</span><svg width="14" height="14"><use href="#ic-ar"/></svg></a></li>
       <li class="card" id="vina-styd"><q data-i="z9.q">как не срываться на близких</q><h3 data-i="z9.h">Вина, стыд, раздражительность</h3><p data-i="z9.p">Срываюсь на близких, потом виню себя. И так по кругу.</p><a class="clink" data-wa="vina" href="https://wa.me/380975280500"><span data-i="b.write">Написать</span><svg width="14" height="14"><use href="#ic-ar"/></svg></a></li>
@@ -259,24 +275,6 @@
         </ul>
         <p class="say-p" data-i="u.p">Один разговор, чтобы понять, что происходит, - это уже работа. Не нужно формулировать «правильно».</p>
         <a class="btn btn-main" data-wa="uznayote" href="https://wa.me/380975280500"><svg width="18" height="18"><use href="#ic-wa"/></svg><span data-i="u.b">Написать Ирине</span></a>
-      </div>
-    </div>
-  </section>
-</div>
-
-<!-- ================= СУПЕРВИЗИЯ: плита ================= -->
-<div class="pw flip" id="superviziya">
-  <section class="plate" aria-labelledby="h-sup">
-    <figure class="ph" style="--pp:50% 62%"><img src="assets/superviziya-ir.webp" alt="Ирина Сыромятникова работает за ноутбуком" data-i-alt="alt.sup" loading="lazy" decoding="async" width="1200" height="1800"></figure>
-    <div class="txt">
-      <p class="kick" data-i="p.kick">Для коллег</p>
-      <h2 class="h2" id="h-sup" data-i="p.h">Супервизия психологов и психотерапевтов</h2>
-      <p class="lead" data-i="p.lead">Разбор случаев, «трудные» клиенты, терапевтическая позиция и границы - в гештальт-подходе. Индивидуально, онлайн или в Кракове.</p>
-      <p class="fig"><b>432</b><span data-i="p.fig">часа подготовки супервизора, Институт гештальта Погодина</span></p>
-      <ul class="chips"><li data-i="p.c1">гештальт-подход</li><li data-i="p.c2">русский и украинский</li><li data-i="p.c3">условия при записи</li></ul>
-      <div class="cta">
-        <a class="btn btn-main" data-wa="superviziya" href="https://wa.me/380975280500"><svg width="18" height="18"><use href="#ic-wa"/></svg><span data-i="p.b">Записаться на супервизию</span></a>
-        <a class="btn btn-ghost" href="https://t.me/Irina_Syrom" target="_blank" rel="noopener"><svg width="18" height="18"><use href="#ic-tg"/></svg><span data-i="b.tg2">Telegram</span></a>
       </div>
     </div>
   </section>
@@ -323,7 +321,7 @@
   <div class="wrap">
     <div class="about">
       <figure class="stub stub-portrait has-img rv rv-ph" id="portrait">
-        <img src="assets/portrait.webp" alt="Ирина Сыромятникова, гештальт-терапевт" data-i-alt="alt.portrait" loading="lazy" decoding="async" width="1000" height="1250">
+        <img src="assets/portrait2.webp" alt="Ирина Сыромятникова, гештальт-терапевт" data-i-alt="alt.portrait" loading="lazy" decoding="async" width="1000" height="1250">
         <figcaption><svg width="26" height="26"><use href="#ic-cam"/></svg><b data-i="ab.stub">Портрет Ирины</b><span data-i="ab.stub2">фото скоро</span></figcaption>
       </figure>
       <div class="about-txt rv">
@@ -477,7 +475,7 @@
       <a class="fig-ig" href="https://www.instagram.com/ira.syromiatnykova/" target="_blank" rel="noopener"><svg width="18" height="18"><use href="#ic-ig"/></svg><span>@ira.syromiatnykova</span></a>
     </div>
     <p class="disc" data-i="ft.disc">Психотерапия не заменяет экстренную помощь и медицинское лечение. Содержание сессий конфиденциально.</p>
-    <p class="legal">ФОП Сиром'ятнікова Ірина Іванівна · ІПН 3001010983</p>
+    <p class="legal">ФОП Сиром'ятникова Ірина Іванівна · ІПН 3001010983</p>
     <p class="copy">© 2026 <span data-i="ft.copy">Ирина Сыромятникова. Гештальт-терапевт, Краков и онлайн.</span></p>
   </div>
 </footer>
@@ -489,6 +487,6 @@
   <a href="https://www.instagram.com/ira.syromiatnykova/" target="_blank" rel="noopener" aria-label="Instagram"><svg width="18" height="18"><use href="#ic-ig"/></svg></a>
 </nav>
 
-<script src="script.js?v=20261012-4"></script>
+<script src="script.js?v=20261013-1"></script>
 </body>
 </html>
