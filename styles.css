@@ -30,7 +30,7 @@ svg{display:block;flex:0 0 auto}
 
 /* ---------- типографика ---------- */
 .kick{display:flex;align-items:center;gap:12px;font:500 11px/1 var(--ft);letter-spacing:.18em;text-transform:uppercase;color:var(--green)}
-.kick::before{content:"";width:28px;height:1px;background:currentColor;flex:0 0 auto}
+.kick::before,.kick::after{content:"";width:28px;height:1px;background:currentColor;flex:0 0 auto}
 .h2{font:300 clamp(32px,4.1vw,56px)/1.06 var(--fd);letter-spacing:-.012em;margin-top:16px;font-variation-settings:"opsz" 60}
 .lead{font-size:17px;line-height:1.55;color:var(--ink-2);margin-top:16px}
 .sh{margin-bottom:clamp(34px,5vw,56px)}
@@ -81,18 +81,18 @@ body.menu-open .burger span:nth-child(3){transform:translateY(-6.6px) rotate(-45
 /* ---------- герой: статичный ---------- */
 /* ГЕРОЙ «тихая протока»: линии берегов сходятся к точке схода, заголовок висит в небе над ней.
    --vx/--vy - точка схода кадра; --hp (0..1) - прогресс прокрутки героя, пишет script.js */
-.hero{--vx:63%;--vy:50%;--hp:0;position:relative;height:100svh;min-height:620px;overflow:hidden;color:var(--ink);isolation:isolate;background:#8FA2A8}
+.hero{--vx:50%;--vy:56%;--oy:78%;--hp:0;position:relative;height:100svh;min-height:620px;overflow:hidden;color:var(--ink);isolation:isolate;background:#8FA2A8}
 .hero-bg{position:absolute;inset:0;margin:0;animation:hero-arrive 2.6s cubic-bezier(.2,.7,.2,1) both;transform-origin:var(--vx) var(--vy)}
-.hero-bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:var(--vx) var(--vy);
+.hero-bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% var(--oy);
   transform-origin:var(--vx) var(--vy);transform:scale(calc(1 + var(--hp) * .16));will-change:transform}
 /* светлая дымка в небе под текстом + плёночное зерно, чтобы не было видно мягкости кадра */
 .hero::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:radial-gradient(62% 58% at 50% 28%,rgba(246,242,234,.74) 0%,rgba(246,242,234,.5) 46%,rgba(246,242,234,0) 100%),
-             linear-gradient(180deg,rgba(246,242,234,.4) 0%,rgba(246,242,234,0) 30%)}
+  background:radial-gradient(42% 46% at 50% 50%,rgba(246,242,234,.8) 0%,rgba(246,242,234,.55) 50%,rgba(246,242,234,0) 100%),
+             linear-gradient(180deg,rgba(246,242,234,.5) 0%,rgba(246,242,234,0) 14%)}
 .hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.16;mix-blend-mode:overlay;
   background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-.hero-txt{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:flex-start;
-  padding:calc(var(--hh) + clamp(20px,5svh,64px)) 0 clamp(24px,5svh,56px);
+.hero-txt{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:center;
+  padding:var(--hh) 0;
   opacity:calc(1 - var(--hp) * 3);transform:translateY(calc(var(--hp) * -90px))}
 .hero-txt > .wrap{display:grid;justify-items:center;text-align:center;width:min(1240px,100% - 48px)}
 .hero-txt > .wrap > *{max-width:820px}
@@ -101,7 +101,7 @@ body.menu-open .burger span:nth-child(3){transform:translateY(-6.6px) rotate(-45
 @keyframes hero-arrive{from{transform:scale(1.09)}to{transform:none}}
 @keyframes hero-rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 .hero .kick{color:var(--green);justify-content:center}
-.hero .kick::before{background:var(--green)}
+.hero .kick::before,.hero .kick::after{background:var(--green)}
 .h1{margin-top:clamp(12px,2svh,20px);display:grid;justify-items:center}
 .h1 .big1{display:block;font:300 clamp(44px,min(7vw,11svh),104px)/.98 var(--fd);letter-spacing:-.02em;white-space:nowrap;color:#123528;font-variation-settings:"opsz" 60}
 .h1 .name{display:block;font:300 italic clamp(24px,3vw,42px)/1.15 var(--fd);color:#1F4A3A;margin-top:clamp(6px,1.2svh,12px)}
@@ -181,7 +181,7 @@ body.menu-open .burger span:nth-child(3){transform:translateY(-6.6px) rotate(-45
 .pw-photo .wrap > *{opacity:0;transform:translateY(14px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
 .pw-photo.on .wrap > *{opacity:1;transform:none}
 .pw-photo .kick{color:rgba(255,255,255,.85)}
-.pw-photo .kick::before{background:rgba(255,255,255,.7)}
+.pw-photo .kick::before,.pw-photo .kick::after{background:rgba(255,255,255,.7)}
 .says{margin-top:clamp(18px,3svh,28px);display:grid;gap:clamp(4px,1svh,10px);max-width:820px}
 .says li{font:300 italic clamp(22px,min(2.6vw,4svh),38px)/1.2 var(--fd);color:#fff;opacity:0;transform:translateY(12px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
 .pw-photo.on .says li{opacity:1;transform:none}
@@ -403,12 +403,11 @@ body.menu-open .burger span:nth-child(3){transform:translateY(-6.6px) rotate(-45
   .h2{font-size:clamp(30px,8.2vw,40px)}
   .lead{font-size:15.5px}
   /* герой: кроп с правым креслом, текст сверху на верхней подложке */
-  /* герой: текст в небе сверху, протока и нос лодки снизу */
-  .hero{--vx:50%;--vy:50%}
-  .hero::before{background:linear-gradient(180deg,rgba(246,242,234,.66) 0%,rgba(246,242,234,.46) 34%,rgba(246,242,234,0) 56%)}
-  .hero-txt{padding-top:calc(var(--hh) + 22px)}
+  /* герой: текст по центру экрана на светлой дымке, нос лодки внизу */
+  .hero{--oy:50%}
+  .hero::before{background:radial-gradient(85% 34% at 50% 48%,rgba(246,242,234,.84) 0%,rgba(246,242,234,.56) 55%,rgba(246,242,234,0) 100%),linear-gradient(180deg,rgba(246,242,234,.5) 0%,rgba(246,242,234,0) 14%)}
   .hero .kick{font-size:9.5px;letter-spacing:.1em;gap:8px;white-space:nowrap}
-  .hero .kick::before{width:14px}
+  .hero .kick::before,.hero .kick::after{width:14px}
   .h1 .big1{font-size:clamp(40px,11.5vw,54px)}
   .h1 .name{font-size:clamp(21px,6vw,28px)}
   .hero .lead{font-size:14.5px;margin-top:12px}
