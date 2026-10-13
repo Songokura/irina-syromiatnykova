@@ -172,7 +172,7 @@ var UK = {
   "h.b1": "Записатися у WhatsApp",
   "h.b2": "Послуги та ціни",
   "h.ig": "Думки та практика в Instagram",
-  "alt.hero": "Ірина Сиром'ятникова в білій футболці за столиком кафе у Кракові",
+  "alt.hero": "Ніс човна на тихій протоці серед очерету",
   "b.wa": "Записатися у WhatsApp",
   "b.tg": "Написати в Telegram",
   "b.tg2": "Telegram",
@@ -187,7 +187,7 @@ var UK = {
   "s1.c1": "онлайн або в Кракові",
   "s1.c2": "пакет 10 сесій -10 %",
   "s1.c3": "російська та українська",
-  "alt.s1": "Ірина Сиром'ятникова на дивані у світлому інтер'єрі",
+  "alt.s1": "Ірина Сиром'ятникова в білій футболці за столиком кафе у Кракові",
   "s2.kick": "Тривала психотерапія",
   "s2.h": "Глибше, ніж симптом: терапія у власному ритмі",
   "s2.lead": "Повторювані сценарії, провина й сором, наслідки травми, емоційні гойдалки. Раз на тиждень, за контрактом.",
@@ -211,7 +211,7 @@ var UK = {
   "s4.c1": "пари та сім'ї",
   "s4.c2": "пакет 10 сесій -10 %",
   "s4.c3": "онлайн або в Кракові",
-  "alt.s4": "Ірина Сиром'ятникова уважно слухає",
+  "alt.s4": "Два човни поруч біля дерев'яного причалу",
   "z.kick": "Запити",
   "z.h": "З чим до мене приходять",
   "z.lead": "Тривога на рівному місці, втома після відпочинку, зриви на близьких - це не «треба взяти себе в руки». З цим можна розібратися.",
@@ -222,7 +222,7 @@ var UK = {
   "z2.p": "Ніщо не тішить, немає сил, самотність, утома не минає навіть після відпочинку.",
   "z2.q": "що робити, якщо ніщо не тішить",
   "z3.h": "Наслідки травми",
-  "z3.p": "Минуле, яке й далі керує теперішнім. Непростий дитячий досвід.",
+  "z3.p": "Минуле, яке й далі керує теперішнім. Складний дитячий досвід.",
   "z3.q": "як перестати боятися",
   "z4.h": "Кризи та розлучення",
   "z4.p": "Розставання, переїзд, втрата - коли звична опора зникла.",
@@ -395,13 +395,13 @@ var EN = {
   "h.big": "Gestalt therapist", "h.name": "Iryna Syromiatnykova",
   "h.lead": "Individual therapy, couples, teenagers, supervision. 2000+ sessions. In person in central Kraków and online. 50-minute session - €50.",
   "h.b1": "Book via WhatsApp", "h.b2": "Services and prices", "h.ig": "Thoughts and practice on Instagram",
-  "alt.hero": "Iryna Syromiatnykova in a white T-shirt at a café table in Kraków",
+  "alt.hero": "The bow of a boat on a quiet channel among reeds",
   "b.wa": "Book via WhatsApp", "b.tg": "Message on Telegram", "b.tg2": "Telegram", "b.write": "Write", "b.wa2": "Message on WhatsApp", "b.book": "Book a session", "b.pack": "Get a package",
   "s1.kick": "Short-term counselling", "s1.h": "Up to 10 meetings around one request",
   "s1.lead": "Anxiety, a crisis, a hard decision, relationships, boundaries. A clear goal and a clear timeframe.",
   "s1.fig": "meetings · €50 per 50 minutes",
   "s1.c1": "online or in Kraków", "s1.c2": "10-session package -10%", "s1.c3": "Russian and Ukrainian",
-  "alt.s1": "Iryna Syromiatnykova on a sofa in a bright interior",
+  "alt.s1": "Iryna Syromiatnykova in a white T-shirt at a café table in Kraków",
   "s2.kick": "Long-term psychotherapy", "s2.h": "Deeper than the symptom: therapy at your own pace",
   "s2.lead": "Repeating patterns, guilt and shame, consequences of trauma, emotional swings. Once a week, under a contract.",
   "s2.fig": "50-minute session",
@@ -416,7 +416,7 @@ var EN = {
   "s4.lead": "Partners, spouses, mother and daughter - any two people who find it hard to hear each other.",
   "s4.fig": "session of 1 hour 20 minutes",
   "s4.c1": "couples and families", "s4.c2": "10-session package -10%", "s4.c3": "online or in Kraków",
-  "alt.s4": "Iryna Syromiatnykova listening attentively",
+  "alt.s4": "Two boats side by side at a wooden pier",
   "z.kick": "Requests", "z.h": "What people come to me with",
   "z.lead": "Anxiety out of nowhere, tiredness after a holiday, snapping at loved ones - this is not «just pull yourself together». It can be worked through.",
   "z1.h": "Anxiety and panic attacks", "z1.p": "Tension without a reason, overthinking before sleep, fear that something will happen.", "z1.q": "how to stop overthinking before sleep",
@@ -497,8 +497,9 @@ var EN = {
   document.querySelectorAll("[data-i-ph]").forEach(function(el){ if (RU[el.dataset.iPh] === undefined) RU[el.dataset.iPh] = el.getAttribute("placeholder"); });
   var t = document.querySelector("title[data-i-t]"); if (t) RU[t.dataset.iT] = t.textContent;
 })();
-var LANGS = ["ru", "uk", "en"];
-function normLang(l){ return LANGS.indexOf(l) > -1 ? l : "ru"; }
+var LANGS = ["uk", "ru", "en"];
+/* язык по умолчанию - украинский (просьба Ирины 13.10.2026) */
+function normLang(l){ return LANGS.indexOf(l) > -1 ? l : "uk"; }
 function curLang(){ return normLang(root.lang); }
 function pick(key, lang){ var d = lang === "en" ? EN : (lang === "uk" ? UK : RU); var v = d[key]; return v === undefined ? RU[key] : v; }
 function applyLang(lang){
@@ -516,7 +517,7 @@ function applyLang(lang){
     b.classList.toggle("is-active", on);
     b.setAttribute("aria-pressed", on ? "true" : "false");
   });
-  try { localStorage.setItem("is-lang", lang); } catch(e){}
+  try { localStorage.setItem("is-lang2", lang); } catch(e){}
   setWa(lang);
   fitText();
   update();
@@ -693,9 +694,9 @@ if (form) form.addEventListener("submit", function(e){
 (function initLang(){
   var url = new URLSearchParams(location.search).get("lang");
   var saved = null;
-  try { saved = localStorage.getItem("is-lang"); } catch(e){}
+  try { saved = localStorage.getItem("is-lang2"); } catch(e){}
   var lang = LANGS.indexOf(url) > -1 ? url : normLang(saved);
-  if (lang !== "ru") applyLang(lang); else setWa("ru");
+  applyLang(lang);
 })();
 document.querySelectorAll(".lang button").forEach(function(b){
   b.addEventListener("click", function(){ applyLang(b.getAttribute("data-lang")); });
