@@ -577,12 +577,27 @@ var kont = document.getElementById("kontakty");
 function hdrState(){
   if (!hdr) return;
   var H = innerHeight || root.clientHeight;
-  var overHero = hero ? scrollY < hero.offsetHeight - HH() : false;
+  /* шапка прозрачная только над небом героя: дальше под ней камыши */
+  var overHero = hero ? scrollY < hero.offsetHeight * 0.2 : false;
   hdr.classList.toggle("over", overHero);
   hdr.classList.toggle("solid", !overHero);
   var onKont = kont && kont.getBoundingClientRect().top < H * 0.6;
   if (bar) bar.classList.toggle("show", scrollY > H * 0.55 && !onKont && !document.body.classList.contains("menu-open"));
 }
+
+/* ---------------- ГЕРОЙ: камера плывёт по протоке ----------------
+   --hp 0..1 пока герой уходит вверх: кадр приближается к точке схода, текст растворяется в небе */
+(function(){
+  if (!hero || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var ticking = false;
+  function upd(){
+    ticking = false;
+    var p = scrollY / (hero.offsetHeight || 1);
+    hero.style.setProperty("--hp", (p < 0 ? 0 : (p > 1 ? 1 : p)).toFixed(4));
+  }
+  addEventListener("scroll", function(){ if (!ticking) { ticking = true; requestAnimationFrame(upd); } }, {passive:true});
+  upd();
+})();
 
 /* ---------------- ПЛИТЫ ----------------
    Один слушатель scroll через rAF. На .pw пишем --enter/--exit/--open. */

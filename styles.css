@@ -53,7 +53,7 @@ h3{font:500 17px/1.3 var(--ft)}
 
 /* ---------- шапка ---------- */
 .hdr{position:fixed;inset:0 0 auto;z-index:50;height:var(--hh);color:var(--ink);transition:background .35s,color .35s,box-shadow .35s}
-.hdr.over{color:#fff}
+.hdr.over{color:var(--ink)}
 .hdr.solid,.hdr.menu{background:rgba(236,231,221,.96);color:var(--ink);box-shadow:0 1px 0 var(--line)}
 .hdr-in{position:relative;height:100%;width:min(1240px,100% - 48px);margin-inline:auto;display:flex;align-items:center;gap:28px}
 .logo{display:flex;flex-direction:column;line-height:1.1;position:relative;z-index:3}
@@ -79,31 +79,42 @@ body.menu-open .burger span:nth-child(3){transform:translateY(-6.6px) rotate(-45
 .mnav{display:none}
 
 /* ---------- герой: статичный ---------- */
-.hero{position:relative;height:100svh;min-height:600px;overflow:hidden;color:#fff;isolation:isolate;
-  background:radial-gradient(120% 90% at 18% 30%,#2C6B54 0%,#1F5A45 38%,#163F31 100%)}
-/* фон - лодка в камышах (фото от Ирины), текст слева на зелёной подложке */
-.hero-bg{position:absolute;inset:0;margin:0}
-.hero-bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% 50%}
-.hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:linear-gradient(90deg,rgba(16,44,34,.86) 0%,rgba(16,44,34,.66) 36%,rgba(16,44,34,.14) 66%,rgba(16,44,34,0) 100%),
-             linear-gradient(180deg,rgba(16,44,34,.4) 0%,rgba(16,44,34,0) 24%,rgba(16,44,34,0) 74%,rgba(16,44,34,.32) 100%)}
-.hero-txt{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:center;padding:var(--hh) 0 clamp(24px,5svh,56px)}
-.hero-txt > .wrap{display:grid;justify-items:start;width:min(1240px,100% - 48px)}
-.hero-txt > .wrap > *{max-width:760px}
-.hero .kick{color:rgba(255,255,255,.82)}
-.hero .kick::before{background:rgba(255,255,255,.7)}
-.h1{margin-top:clamp(14px,2.4svh,24px);display:grid}
-.h1 .big1{display:block;font:300 clamp(44px,min(7vw,11svh),100px)/.98 var(--fd);letter-spacing:-.02em;white-space:nowrap;color:#fff;font-variation-settings:"opsz" 60}
-.h1 .name{display:block;font:300 italic clamp(24px,3vw,44px)/1.15 var(--fd);color:rgba(255,255,255,.9);margin-top:clamp(8px,1.4svh,14px)}
-.hero .lead{color:rgba(255,255,255,.88);margin-top:clamp(14px,2.4svh,22px);font-size:17px;max-width:620px}
-.hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:clamp(20px,3.4svh,34px)}
+/* ГЕРОЙ «тихая протока»: линии берегов сходятся к точке схода, заголовок висит в небе над ней.
+   --vx/--vy - точка схода кадра; --hp (0..1) - прогресс прокрутки героя, пишет script.js */
+.hero{--vx:63%;--vy:50%;--hp:0;position:relative;height:100svh;min-height:620px;overflow:hidden;color:var(--ink);isolation:isolate;background:#8FA2A8}
+.hero-bg{position:absolute;inset:0;margin:0;animation:hero-arrive 2.6s cubic-bezier(.2,.7,.2,1) both;transform-origin:var(--vx) var(--vy)}
+.hero-bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:var(--vx) var(--vy);
+  transform-origin:var(--vx) var(--vy);transform:scale(calc(1 + var(--hp) * .16));will-change:transform}
+/* светлая дымка в небе под текстом + плёночное зерно, чтобы не было видно мягкости кадра */
+.hero::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(62% 58% at 50% 28%,rgba(246,242,234,.74) 0%,rgba(246,242,234,.5) 46%,rgba(246,242,234,0) 100%),
+             linear-gradient(180deg,rgba(246,242,234,.4) 0%,rgba(246,242,234,0) 30%)}
+.hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.16;mix-blend-mode:overlay;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.hero-txt{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:flex-start;
+  padding:calc(var(--hh) + clamp(20px,5svh,64px)) 0 clamp(24px,5svh,56px);
+  opacity:calc(1 - var(--hp) * 3);transform:translateY(calc(var(--hp) * -90px))}
+.hero-txt > .wrap{display:grid;justify-items:center;text-align:center;width:min(1240px,100% - 48px)}
+.hero-txt > .wrap > *{max-width:820px}
+.hero-txt > .wrap > *{animation:hero-rise 1.2s cubic-bezier(.2,.7,.2,1) both}
+.hero-txt .h1{animation-delay:.15s}.hero-txt .lead{animation-delay:.3s}.hero-cta{animation-delay:.45s}.hero .tlink{animation-delay:.55s}
+@keyframes hero-arrive{from{transform:scale(1.09)}to{transform:none}}
+@keyframes hero-rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.hero .kick{color:var(--green);justify-content:center}
+.hero .kick::before{background:var(--green)}
+.h1{margin-top:clamp(12px,2svh,20px);display:grid;justify-items:center}
+.h1 .big1{display:block;font:300 clamp(44px,min(7vw,11svh),104px)/.98 var(--fd);letter-spacing:-.02em;white-space:nowrap;color:#123528;font-variation-settings:"opsz" 60}
+.h1 .name{display:block;font:300 italic clamp(24px,3vw,42px)/1.15 var(--fd);color:#1F4A3A;margin-top:clamp(6px,1.2svh,12px)}
+.hero .lead{color:#16211D;font-weight:500;margin-top:clamp(12px,2svh,18px);font-size:17px;max-width:600px}
+.hero-cta{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:clamp(18px,3svh,30px)}
 .hero-cta .btn{min-width:230px}
-.hero .btn-main{background:var(--paper);color:var(--green);box-shadow:0 18px 30px -18px rgba(0,0,0,.7)}
-.hero .btn-main:hover{background:#fff}
-.hero .btn-ghost{color:#fff;border-color:rgba(255,255,255,.5)}
-.hero .btn-ghost:hover{border-color:#fff;background:rgba(255,255,255,.1)}
-.hero .tlink{margin-top:18px;color:rgba(255,255,255,.84);border-color:rgba(255,255,255,.35)}
-.hero .tlink:hover{color:#fff;border-color:#fff}
+.hero .btn-ghost{color:#123528;border-color:rgba(18,53,40,.45);background:rgba(246,242,234,.35);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.hero .btn-ghost:hover{border-color:#123528;background:rgba(246,242,234,.6)}
+.hero .tlink{margin-top:16px;color:#1F2A26;border-color:rgba(18,53,40,.35)}
+.hero .tlink:hover{color:#123528;border-color:#123528}
+@media(max-width:760px){.hero .tlink{padding:7px 14px;border:0;border-radius:999px;background:rgba(246,242,234,.78);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}}
+@media(prefers-reduced-motion:reduce){.hero-bg,.hero-txt > .wrap > *{animation:none}.hero-bg img{transform:none}.hero-txt{opacity:1;transform:none}}
+.hero .btn-main{box-shadow:0 18px 30px -16px rgba(18,53,40,.7)}
 
 /* ---------- плиты ---------- */
 /* 12.10.2026 по просьбе клиента: плиты идут обычной прокруткой, без наезда следующей на текущую */
@@ -392,10 +403,10 @@ body.menu-open .burger span:nth-child(3){transform:translateY(-6.6px) rotate(-45
   .h2{font-size:clamp(30px,8.2vw,40px)}
   .lead{font-size:15.5px}
   /* герой: кроп с правым креслом, текст сверху на верхней подложке */
-  /* герой: протока и нос лодки по центру кадра, текст снизу на зелёной подложке */
-  .hero-bg img{object-position:64% 50%}
-  .hero::after{background:linear-gradient(180deg,rgba(16,44,34,.5) 0%,rgba(16,44,34,0) 18%,rgba(16,44,34,0) 30%,rgba(16,44,34,.78) 56%,#123528 84%)}
-  .hero-txt{justify-content:flex-end;padding-bottom:calc(24px + env(safe-area-inset-bottom))}
+  /* герой: текст в небе сверху, протока и нос лодки снизу */
+  .hero{--vx:50%;--vy:50%}
+  .hero::before{background:linear-gradient(180deg,rgba(246,242,234,.66) 0%,rgba(246,242,234,.46) 34%,rgba(246,242,234,0) 56%)}
+  .hero-txt{padding-top:calc(var(--hh) + 22px)}
   .hero .kick{font-size:9.5px;letter-spacing:.1em;gap:8px;white-space:nowrap}
   .hero .kick::before{width:14px}
   .h1 .big1{font-size:clamp(40px,11.5vw,54px)}
@@ -454,6 +465,11 @@ body.menu-open .burger span:nth-child(3){transform:translateY(-6.6px) rotate(-45
 }
 @media(max-width:380px){
   .cta .btn{flex:1 1 100%}
+  /* украинская фамилия длиннее русской - шапка не влезала, бургер уезжал за край */
+  .logo .lg1{font-size:14px}
+  .logo .lg2{font-size:7.8px;letter-spacing:.12em}
+  .hdr-in{gap:8px}
+  .lang button{padding:6px 8px}
   .hero .kick{font-size:8.6px;letter-spacing:.07em}
 }
 @media(max-height:700px) and (max-width:760px){
