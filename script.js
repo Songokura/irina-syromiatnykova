@@ -172,7 +172,7 @@ var UK = {
   "h.b1": "Записатися у WhatsApp",
   "h.b2": "Послуги та ціни",
   "h.ig": "Думки та практика в Instagram",
-  "alt.hero": "Ніс човна на тихій протоці серед очерету",
+  "alt.hero": "Тихе озеро на світанку, туман над дзеркальною водою",
   "b.wa": "Записатися у WhatsApp",
   "b.tg": "Написати в Telegram",
   "b.tg2": "Telegram",
@@ -395,7 +395,7 @@ var EN = {
   "h.big": "Gestalt therapist", "h.name": "Iryna Syromiatnykova",
   "h.lead": "Individual therapy, couples, teenagers, supervision. 2000+ sessions. In person in central Kraków and online. 50-minute session - €50.",
   "h.b1": "Book via WhatsApp", "h.b2": "Services and prices", "h.ig": "Thoughts and practice on Instagram",
-  "alt.hero": "The bow of a boat on a quiet channel among reeds",
+  "alt.hero": "A quiet lake at dawn, mist over mirror-still water",
   "b.wa": "Book via WhatsApp", "b.tg": "Message on Telegram", "b.tg2": "Telegram", "b.write": "Write", "b.wa2": "Message on WhatsApp", "b.book": "Book a session", "b.pack": "Get a package",
   "s1.kick": "Short-term counselling", "s1.h": "Up to 10 meetings around one request",
   "s1.lead": "Anxiety, a crisis, a hard decision, relationships, boundaries. A clear goal and a clear timeframe.",
@@ -577,7 +577,7 @@ var kont = document.getElementById("kontakty");
 function hdrState(){
   if (!hdr) return;
   var H = innerHeight || root.clientHeight;
-  /* шапка прозрачная только над небом героя: дальше под ней камыши */
+  /* шапка прозрачная только над небом героя: дальше под ней вода */
   var overHero = hero ? scrollY < hero.offsetHeight * 0.2 : false;
   hdr.classList.toggle("over", overHero);
   hdr.classList.toggle("solid", !overHero);
@@ -585,17 +585,25 @@ function hdrState(){
   if (bar) bar.classList.toggle("show", scrollY > H * 0.55 && !onKont && !document.body.classList.contains("menu-open"));
 }
 
-/* ---------------- ГЕРОЙ: камера плывёт по протоке ----------------
-   --hp 0..1 пока герой уходит вверх: кадр приближается к точке схода, текст растворяется в небе */
+/* ---------------- ГЕРОЙ: камера плывёт к горизонту ----------------
+   p 0..1 пока герой уходит вверх: кадр приближается к точке схода, текст растворяется в небе.
+   Пишем transform/opacity прямо в элементы (только композитор), высоту героя кэшируем -
+   без чтения раскладки в каждом кадре скролла. За пределами героя не пишем ничего. */
 (function(){
   if (!hero || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  var ticking = false;
+  var img = hero.querySelector(".hero-bg img"), txt = hero.querySelector(".hero-txt");
+  var hh = hero.offsetHeight || 1, ticking = false, lastP = -1;
   function upd(){
     ticking = false;
-    var p = scrollY / (hero.offsetHeight || 1);
-    hero.style.setProperty("--hp", (p < 0 ? 0 : (p > 1 ? 1 : p)).toFixed(4));
+    var p = scrollY / hh;
+    p = p < 0 ? 0 : (p > 1 ? 1 : p);
+    if (Math.abs(p - lastP) < 0.0005) return;
+    lastP = p;
+    if (img) img.style.transform = "scale(" + (1 + p * 0.16).toFixed(4) + ")";
+    if (txt) { txt.style.opacity = Math.max(0, 1 - p * 3).toFixed(3); txt.style.transform = "translate3d(0," + (p * -90).toFixed(1) + "px,0)"; }
   }
   addEventListener("scroll", function(){ if (!ticking) { ticking = true; requestAnimationFrame(upd); } }, {passive:true});
+  addEventListener("resize", function(){ hh = hero.offsetHeight || 1; lastP = -1; upd(); });
   upd();
 })();
 
@@ -656,8 +664,12 @@ function stackCheck(){
   document.querySelectorAll(".plate").forEach(function(p){ if (p.scrollHeight > H + 2) over = true; });
   root.classList.toggle("no-stack", over);
 }
-var rsTimer;
+var rsTimer, rsW = innerWidth;
 addEventListener("resize", function(){
+  /* на телефоне адресная строка прячется при прокрутке и шлёт resize - ширина та же,
+     полная перекладка (stackCheck, fitText) в этот момент давала рывок; пересчитываем только при смене ширины */
+  if (innerWidth === rsW) { update(); return; }
+  rsW = innerWidth;
   stackCheck(); update();
   clearTimeout(rsTimer);
   rsTimer = setTimeout(function(){ fitText(); update(); }, 200);
