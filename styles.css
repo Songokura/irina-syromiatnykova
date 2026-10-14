@@ -560,3 +560,14 @@ html.no-plate .plate .txt > *,html.no-plate .pw-photo .wrap > *,html.no-plate .s
   .rv-ph{transition:opacity .9s ease}
   html.no-plate .pw .ph{opacity:1}
 }
+
+/* ---------- ТЕЛЕФОН (14.10.2026): плиты без пустот и с разделением листами ----------
+   no-stack/no-plate растягивали каждую плиту на 100svh - под коротким текстом зияла пустота.
+   Обычные плиты идут по высоте содержимого; на 100svh остаётся только фото-плита с цитатами.
+   Разделение: следующая плита наезжает на предыдущую листом со скруглёнными верхними углами и мягкой тенью. */
+@media(max-width:760px){
+  html.no-stack .pw:not(.pw-photo),html.no-plate .pw:not(.pw-photo),
+  html.no-stack .pw:not(.pw-photo) .plate,html.no-plate .pw:not(.pw-photo) .plate{min-height:0}
+  html .pw,html.no-stack .pw,html.no-plate .pw{margin-top:-28px;border-radius:28px 28px 0 0;box-shadow:0 -14px 28px -12px rgba(31,36,34,.28)}
+  .pw:not(.pw-photo) .plate .txt{padding-bottom:76px}
+}
