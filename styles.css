@@ -463,8 +463,8 @@ body.menu-open .burger span:nth-child(3){transform:translateY(-6.6px) rotate(-45
 }
 @media(max-width:380px){
   .cta .btn{flex:1 1 100%}
-  /* украинская фамилия длиннее русской - шапка не влезала, бургер уезжал за край */
-  .logo .lg1{font-size:14px}
+  /* фамилия длинная (в RU «Сыромятникова» шире всех) - шапка не влезала, бургер уезжал за край; замер на 360 во всех трёх языках */
+  .logo .lg1{font-size:13.4px}
   .logo .lg2{font-size:7.8px;letter-spacing:.12em}
   .hdr-in{gap:8px}
   .lang button{padding:6px 8px}
@@ -575,4 +575,9 @@ html.no-plate .plate .txt > *,html.no-plate .pw-photo .wrap > *,html.no-plate .s
 @media(max-width:760px){
   html.no-stack .pw-photo .ph,html.no-plate .pw-photo .ph{height:auto}
   .pw-photo .ph::after{background:linear-gradient(180deg,rgba(24,22,20,.62) 0%,rgba(24,22,20,.5) 50%,rgba(24,22,20,.66) 100%)}
+}
+/* длинные кикеры плит («Парне та сімейне консультування») на телефоне в одну строку: при переносе черточки разъезжались к краям */
+@media(max-width:760px){
+  .kick{font-size:10px;letter-spacing:.1em;gap:8px}
+  .kick::before,.kick::after{width:18px}
 }
