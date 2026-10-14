@@ -571,3 +571,8 @@ html.no-plate .plate .txt > *,html.no-plate .pw-photo .wrap > *,html.no-plate .s
   html .pw,html.no-stack .pw,html.no-plate .pw{margin-top:-28px;border-radius:28px 28px 0 0;box-shadow:0 -14px 28px -12px rgba(31,36,34,.28)}
   .pw:not(.pw-photo) .plate .txt{padding-bottom:76px}
 }
+/* фото-плита с цитатами: фото на всю плиту, а не 40svh из no-stack - иначе белый текст ниже фото ложится на светлый фон */
+@media(max-width:760px){
+  html.no-stack .pw-photo .ph,html.no-plate .pw-photo .ph{height:auto}
+  .pw-photo .ph::after{background:linear-gradient(180deg,rgba(24,22,20,.62) 0%,rgba(24,22,20,.5) 50%,rgba(24,22,20,.66) 100%)}
+}
