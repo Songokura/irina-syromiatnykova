@@ -21,7 +21,7 @@ var root = document.documentElement;
 function conv(key){
   var id = (window.CO_CONV || {})[key];
   if (!id || typeof window.gtag !== "function") return;
-  window.gtag("event", "conversion", {send_to: id, value: 1.0, currency: "EUR", transport_type: "beacon"});
+  window.gtag("event", "conversion", {send_to: id, value: 1.0, currency: "USD", transport_type: "beacon"});
 }
 window.addEventListener("click", function(e){
   var a = e.target.closest ? e.target.closest("a[href]") : null;
@@ -30,6 +30,7 @@ window.addEventListener("click", function(e){
   if (h.indexOf("tel:") === 0) conv("phone");
   else if (h.indexOf("wa.me") > -1) conv("contact");
   else if (h.indexOf("t.me") > -1) conv("telegram");
+  else if (h.indexOf("mailto:") === 0) conv("email");
 }, true);
 
 /* ---------------- ТЕКСТЫ WhatsApp ПО ТЕМАМ ---------------- */
